@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>교보문고 메인 페이지</title>
+    <!-- 반응형 웹을 선언하는 명령어 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 부트스트랩 4.3.1 버전 css 파일 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <style type="text/css">
+        /* 크롬 브라우저 적용 css */
+        input:-ms-input-placeholder {
+            color: #a8a8a8;
+        }
+
+        /* 익스플로러 브라우저 적용 css */
+        input::-webkit-input-placeholder {
+            color: #a8a8a8;
+        }
+
+        /* 파이어폭스 브라우저 적용 css */
+        input:-moz-placeholder {
+            color: #a8a8a8;
+        }
+
+        /* body tag 전체 적용 css */
+        body {
+            background-color: white;
+        }
+
+        /* h1 tag 전체 적용 css */
+        h1 {
+            color: black;
+            text-align: center;
+            margin: 100px;
+            font-family: fantasy;
+        }
+
+        /* p tag 전체 적용 css */
+        p {
+            font-family: Verdana;
+            font-size: 20px;
+        }
+
+        /* 전체 틀 잡아주는 div css */
+        .container-fluid {
+            text-align: center;
+        }
+
+
+        /* 검색창 css */
+        .search-window {
+            display: inline-block;
+            width: 370px;
+            height: 40px;
+            border: 3px solid #2db400;
+            background: white;
+            vertical-align: middle;
+        }
+
+        /* 검색창 input css */
+        .search-input {
+            width: 350px;
+            height: 25px;
+            margin: 6px 0 0 9px;
+            border: 0;
+            line-height: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* 검색 버튼 css */
+        .search-submit {
+            width: 54px;
+            height: 40px;
+            margin: 0;
+            border: 0;
+            vertical-align: middle;
+            background: #22B600;
+            color: white;
+            font-weight: bold;
+            border-radius: 1px;
+            cursor: pointer;
+
+        }
+
+        /* 검색 버튼에 마우스 올리면 적용되는 css */
+        .search-submit:hover {
+            background: #56c82c;
+        }
+
+        #loginBtn {
+            margin-left: 30px;
+        }
+
+        #joinBtn{
+            margin-left: 10px;
+        }
+
+        /* 대표 이미지 css */
+        #image-one,
+        #image-two,
+        #image-three,
+        #image-four {
+            width: 200px;
+            height: 300px;
+            padding-left: 50px;
+            margin-top: 20px;
+        }
+
+        /* 상단 메뉴바 css */
+        .nav-container {
+            position: relative;
+            width: 100%;
+            margin-top: 50px;
+            padding: 0;
+            background-color: darkslategray;
+            list-style-type: none;
+            text-align: center;
+
+        }
+
+        /* 상단 메뉴바 아이템 css */
+        .nav-item {
+            padding: 15px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        /* 상단 메뉴바 아이템 링크 css */
+        .nav-item a {
+            text-decoration: none;
+            color: white;
+        }
+
+        /* 상단 메뉴바 아이템 마우스 올리면 적용되는 css */
+        .nav-item:hover {
+            background-color: gray;
+        }
+    </style>
+
+    <script>
+        // 로그인 버튼 클릭 함수
+        function login() {            
+            location.href = "login.php"
+        }
+        // 회원가입 버튼 클릭 함수
+        function join() {
+            location.href = "join.php"
+        }
+        function loginCheck(){
+           
+                alert('로그인을 해주세요.');
+            
+            
+        }
+    </script>
+
+</head>
+
+<body>
+    <!-- 메인 화면 타이틀 -->
+    <h1>Books Come True</h1>
+    <!-- 전체틀 감싸는 div 시작 -->
+    <div class="container-fluid">
+        <img id="logo" src="image/BCTLogo.png" alt="BCT image" onclick="location.href='index.html'">
+
+        <span class="search-window">
+            <input type="text" class="search-input" placeholder="도서 검색" />
+        </span>
+        <button type="submit" class="search-submit">검색</button>
+
+        <input type="button" class="btn btn-light" id="loginBtn" onclick="login()" value="로그인"></input>
+        <input type="button" class="btn btn-light" id="joinBtn" onclick="join()" value="회원가입"></input>
+
+        <!-- 상단 메뉴바 시작 -->
+        <nav class="nav-main">
+
+            <ul class="nav-container">
+                <li class="nav-item" onclick="loginCheck()"><a href="domestic.html">국내도서</a></li>
+                <li class="nav-item"><a href="foreign.html">외국도서</a></li>
+                <li class="nav-item"><a href="pick.html">찜한도서</a></li>
+                <li class="nav-item"><a href="gift.html">선물한도서</a></li>
+            </ul>
+            <!-- 상단 메뉴바 끝 -->
+        </nav>
+        <!-- 대표 도서 이미지 div 시작 -->
+        <div>
+
+            <img id="image-one" src="algo-image" alt="algo image">
+            <img id="image-two" src="altruist-image" alt="altruist image">
+            <img id="image-three" src="bone-image" alt="bone image">
+            <img id="image-four" src="contents-image" alt="contents image">
+            <!-- 대표 도서 이미지 div 끝 -->
+        </div>
+        <!-- 전체틀 감싸는 div 끝 -->
+    </div>
+
+
+
+    <!-- 부트스트랩 4 버전 부터는 jQuery, popper 파일을 함께 적용시켜야 한다 -->
+    <!-- 제이쿼리 3.4.1 버전 js 파일 -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- popper 1.15.0 버전 js 파일 -->
+    <script src="js/popper.min.js"></script>
+    <!-- 부트스트랩 4.3.1 버전 js 파일 -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
