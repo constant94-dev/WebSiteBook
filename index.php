@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>교보문고 메인 페이지</title>
+    <!-- 반응형 웹을 선언하는 명령어 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 부트스트랩 4.3.1 버전 css 파일 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <style type="text/css">
+        /* 크롬 브라우저 적용 css */
+        input:-ms-input-placeholder {
+            color: #a8a8a8;
+        }
+
+        /* 익스플로러 브라우저 적용 css */
+        input::-webkit-input-placeholder {
+            color: #a8a8a8;
+        }
+
+        /* 파이어폭스 브라우저 적용 css */
+        input:-moz-placeholder {
+            color: #a8a8a8;
+        }
+
+        /* 이주의 책 이미지 css */
+        img {
+            margin: 50px;
+
+        }
+
+        /* 이주의 책 div css */
+        .week-div {
+            width: 1080px;
+            margin: 0 auto;
+        }
+
+        /* 이주의 책 타이틀 css */
+        .week-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+
+        /* 슬라이드 이미지 css */
+        img {
+            vertical-align: middle;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Next & previous buttons */
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Caption text */
+        .text {
+            color: #f2f2f2;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        /* 이미지 슬라이드 밑에 점에 마우스 올렸을 때 css */
+        .dot:hover {
+            background-color: #717171;
+        }
+
+        /* On smaller screens, decrease text size */
+        @media only screen and (max-width: 300px) {
+
+            .prev,
+            .next,
+            .text {
+                font-size: 11px
+            }
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <!-- 상단에 고정된 헤더 파일 include -->
+    <div id="headers"></div>
+
+    <!-- 이미지 슬라이드 전체 틀 시작 -->
+    <div class="slideshow-container">
+
+        <div class="mySlides">
+            <div class="numbertext">1 / 3</div>
+            <img src="image/completeStudy.png" style="width:100%">            
+        </div>
+
+        <div class="mySlides">
+            <div class="numbertext">2 / 3</div>
+            <img src="image/coverage.png" style="width:100%">
+        </div>
+
+        <div class="mySlides">
+            <div class="numbertext">3 / 3</div>
+            <img src="image/habit.png" style="width:100%">
+        </div>
+
+    <!-- 이미지 슬라이드 전체 틀 시작 -->
+    </div>
+    <br>
+
+    <!-- 점 표시 틀 시작 -->
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    <!-- 점 표시 틀 시작 -->
+    </div>
+
+    <!-- 이주의 책 틀 시작 -->
+    <div class="week-div">
+        <h3 class="week-title">이주의 책</h3>
+        <img src="image/bone.png" class="img-thumbnail" />
+        <img src="image/titan.png" class="img-thumbnail" />
+        <img src="image/algo.png" class="img-thumbnail" />
+        <img src="image/altruist.png" class="img-thumbnail" />
+    <!-- 이주의 책 틀 끝 -->
+    </div>
+    
+    <!-- 상단에 고정된 푸터 파일 include -->
+    <div id="footers"></div>
+
+
+    <!-- 부트스트랩 4 버전 부터는 jQuery, popper 파일을 함께 적용시켜야 한다 -->
+    <!-- 제이쿼리 3.4.1 버전 js 파일 -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- popper 1.15.0 버전 js 파일 -->
+    <script src="js/popper.min.js"></script>
+    <!-- 부트스트랩 4.3.1 버전 js 파일 -->
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // 처음 슬라이드 인덱스
+        var slideIndex = 1;
+        // 페이지 나오자마자 슬라이드 함수 바로 실행
+        showSlides(slideIndex);
+
+        // dot 클릭 함수 실행
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+        // 슬라이드 반복 함수 실행
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+        // html 구조 다 불러오고 실행하는 함수
+        $(document).ready(function () {
+
+            $("#headers").load("header.html");  // 원하는 파일 경로를 삽입하면 된다
+            $("#footers").load("footer.html");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
+
+        });
+    </script>
+</body>
+
+</html>

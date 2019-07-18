@@ -1,73 +1,55 @@
-  <!DOCTYPE html>
-  <html>
-  <head>
-  <title>로그인 페이지</title>
+<?php
+include 'dbconfig/config.php';
+// isset () 함수는 변수가 설정되었는지 여부를 확인하는 데 사용됩니다. 
+// 변수가 이미 unset () 함수로 설정 해제 된 경우 더 이상 설정되지 않습니다. 
+// 테스트 변수가 NULL 값을 포함하면 isset () 함수는 false를 반환합니다
 
-  <!-- 반응형 웹을 선언하는 명령어 -->
-  <meta name = "viewport" content = "width=device-width, initial-scale=1" />
-  <!-- 부트스트랩 4.3.1 버전 css 파일 -->
-  <link rel = "stylesheet" href = "css/bootstrap.min.css" />
-  <style>
+if(!isset($_POST['memberemail']) || !isset($_POST['memberpassword'])) exit;
+$memberemail = $_POST['memberemail'];
+$memberpassword = $_POST['memberpassword'];
+
+//아이디가 있는지 검사
+$query = "SELECT * FROM bct_join WHERE memberemail='$memberemail'";
+$result = $db->query($query);
+
+        //아이디가 있다면 비밀번호 검사
+        if(mysqli_num_rows($result)==1) {
+ 
+            // mysqli_fetch_assoc 함수는 mysqli_query 를 통해 얻은 리절트 셋(result set)에서 레코드를 1개씩 리턴해주는 함수입니다.
+            // 레코드를 1개씩 리턴해주는 것은 mysqli_fetch_row 와 동일하지만 mysqli_fetch_assoc 함수가 리턴하는 값은 연관배열이라는 점이 틀립니다.
+            $row=mysqli_fetch_assoc($result);
+
+            //비밀번호가 맞다면 세션 생성
+            if($row['memberpassword']==$memberpassword){
+                    session_start();
+                    $_SESSION['memberemail']=$memberemail;
+                    $_SESSION['membername']=$row['membername'];
+                    if(isset($_SESSION['memberemail'])){
+                        echo("<script>
+                        alert('로그인 되었습니다.');
+                        location.replace('index.html');
+                        </script>");
+                    }
+                    else{
+                            echo "session fail";
+                    }
+            }
+            // 비밀번호가 틀리면 보여주는 알림창
+            else {
+                    echo("<script>
+                        alert('비밀번호가 잘못되었습니다');
+                        history.back();
+                        </script>");
   
-  body {
-        background: #f8f8f8;
-        padding: 60px 0;
-        text-align: center;
+            }
+
     }
-    
-    #login-form > div {
-        margin: 15px 0;
-        
+    // 아이디가 존재하지 않는다면 보여주는 알림창
+    else{
+            echo("<script>
+            alert('아이디가 존재하지 않습니다');
+            history.back();
+            </script>");
     }
-    #login-div{
-        width:500px;
-        margin: 0 auto;
-    }
-    
-  </style>
-  </head>
 
-  <body>
-
-  <div>
-
-  <img src = "image/login.png" />
-
-  <div class="container">
-    <div id="login-div">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="panel-title">환영합니다!</div>
-            </div>
-            <div class="panel-body">
-                <form id="login-form" action="index.html" method="post">
-                    <div>
-                        <input type="text" class="form-control" name="username" placeholder="Username" autofocus>
-                    </div>
-                    <div>
-                        <input type="password" class="form-control" name="password" placeholder="Password">
-                    </div>
-                    <div>
-                        <button type="submit" class="form-control btn btn-primary">로그인</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-  </div>
-
-
-
-
-
-    <!-- 부트스트랩 4 버전 부터는 jQuery, popper 파일을 함께 적용시켜야 한다 -->
-    <!-- 제이쿼리 3.4.1 버전 js 파일 -->
-    <script src = "js/jquery-3.4.1.min.js"></script>
-    <!-- popper 1.15.0 버전 js 파일 -->
-    <script src = "js/popper.min.js"></script>
-    <!-- 부트스트랩 4.3.1 버전 js 파일 -->
-    <script src = "js/bootstrap.min.js"></script>
-  </body>
-  </html>
+?>

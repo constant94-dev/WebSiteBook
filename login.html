@@ -1,73 +1,82 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>로그인 페이지</title>
+    <title>로그인 페이지</title>
 
-<!-- 반응형 웹을 선언하는 명령어 -->
-<meta name = "viewport" content = "width=device-width, initial-scale=1" />
-<!-- 부트스트랩 4.3.1 버전 css 파일 -->
-<link rel = "stylesheet" href = "css/bootstrap.min.css" />
-<style>
+    <!-- 반응형 웹을 선언하는 명령어 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 부트스트랩 4.3.1 버전 css 파일 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <style>
+        /* 전체 body 테그 css */
+        body {
+            background: #f8f8f8;
+            padding: 60px 0;
+            text-align: center;
+        }
 
-body {
-      background: #f8f8f8;
-      padding: 60px 0;
-      text-align: center;
-  }
-  
-  #login-form > div {
-      margin: 15px 0;
-      
-  }
-  #login-div{
-      width:500px;
-      margin: 0 auto;
-  }
-  
-</style>
+        /* id login-form 밑에 존재하는 모든 div 태그 css */
+        #login-form>div {
+            margin: 15px 0;
+
+        }
+
+        /* id login-div 태그 css */
+        #login-div {
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
 
-<div>
+    <div>
 
-<img src = "image/login.png" />
+        <img src="image/login.png" />
+        <!-- 전체 틀 시작 -->
+        <div class="container">
+            <!-- 로그인 폼 외부 div 틀 시작 -->
+            <div id="login-div">
+                <!-- 환영합니다 텍스트 틀 시작 -->
+                <div class="panel-heading">
+                    <div class="panel-title">환영합니다!</div>
+                    <!-- 환영합니다 텍스트 틀 끝 -->
+                </div>
+                <!-- 로그인 폼 틀 시작 -->
+                <div class="panel-body">
+                    <form id="login-form" action="login.php" method="post">
+                        <div>
+                            <input type="text" class="form-control" name="memberemail" placeholder="이메일을 입력하세요"
+                                autofocus>
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" name="memberpassword" placeholder="비밀번호를 입력하세요">
+                        </div>
+                        <div>
+                            <button type="submit" class="form-control btn btn-primary">로그인</button>
+                        </div>
+                    </form>
+                    <!-- 로그인 폼 틀 끝 -->
+                </div>
+                <!-- 로그인 폼 외부 div 틀 끝 -->
+            </div>
+            <!-- 전체 틀 시작 -->
+        </div>
 
-<div class="container">
-  <div id="login-div">
-      <div class="panel panel-success">
-          <div class="panel-heading">
-              <div class="panel-title">환영합니다!</div>
-          </div>
-          <div class="panel-body">
-              <form id="login-form" action="index.html" method="post">
-                  <div>
-                      <input type="text" class="form-control" name="memberemail" placeholder="이메일을 입력하세요" autofocus>
-                  </div>
-                  <div>
-                      <input type="password" class="form-control" name="memberpassword" placeholder="비밀번호를 입력하세요">
-                  </div>
-                  <div>
-                      <button type="submit" class="form-control btn btn-primary">로그인</button>
-                  </div>
-              </form>
-          </div>
-      </div>
-  </div>
-</div>
-
-</div>
+    </div>
 
 
 
 
 
-  <!-- 부트스트랩 4 버전 부터는 jQuery, popper 파일을 함께 적용시켜야 한다 -->
-  <!-- 제이쿼리 3.4.1 버전 js 파일 -->
-  <script src = "js/jquery-3.4.1.min.js"></script>
-  <!-- popper 1.15.0 버전 js 파일 -->
-  <script src = "js/popper.min.js"></script>
-  <!-- 부트스트랩 4.3.1 버전 js 파일 -->
-  <script src = "js/bootstrap.min.js"></script>
+    <!-- 부트스트랩 4 버전 부터는 jQuery, popper 파일을 함께 적용시켜야 한다 -->
+    <!-- 제이쿼리 3.4.1 버전 js 파일 -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- popper 1.15.0 버전 js 파일 -->
+    <script src="js/popper.min.js"></script>
+    <!-- 부트스트랩 4.3.1 버전 js 파일 -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
