@@ -38,7 +38,7 @@ $result = $db->query($query);
             else {
                     echo("<script>
                         alert('비밀번호가 잘못되었습니다');
-                        history.back();
+                        location.replace('index.html');
                         </script>");
   
             }
@@ -48,7 +48,7 @@ $result = $db->query($query);
     else{
             echo("<script>
             alert('아이디가 존재하지 않습니다');
-            history.back();
+            location.replace('index.html');
             </script>");
     }
 
