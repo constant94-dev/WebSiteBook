@@ -1,3 +1,13 @@
+<?php
+include 'dbconfig/config.php';
+
+$title = $_GET['title'];
+$sql = "SELECT * FROM bct_board WHERE title='$title'";
+$result = $db->query($sql);
+
+$row=mysqli_fetch_assoc($result);
+$id = $row['id'];
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,19 +37,21 @@
         <div id="headers"></div>
         <!-- 전체 틀 시작 -->
         <div class="container">
-            <h2 id="faqwrite-title">글쓰기</h2>
-            <form action="faqInsertSuccess.php" method="post">
+            <h2 id="faqwrite-title">수정할 글</h2>
+            <hr/>
+            <form action="faqUpdateSuccess.php?id=<?php echo $id;?>" method="post">
             <div class="mb-3">
                 <label for="title">제목</label>
-                <input class="form-control" id="title" name="title" placeholder="제목을 입력해 주세요" type="text">
+                <input class="form-control" id="title" name="title" placeholder="제목을 입력해 주세요" type="text" value="<?php echo $row['title'];?>"/>            
             </div>
+            <hr/>
             <div class="mb-3">
                 <label for="title">내용</label>
-                <textarea class="form-control" id="content" name="content" placeholder="내용을 입력해 주세요" rows="5"></textarea>
+                <textarea class="form-control" id="content" name="content" placeholder="내용을 입력해 주세요" rows="5"><?php echo $row['content'];?></textarea>
             </div>            
             <div id="faqwrite-list">
-                <input type="submit" value="저장" class="btn btn-sm btn-primary"/>
-                <button class="btn btn-sm btn-primary" onclick="btnList()" type="button">목록</button>
+                <input type="submit" value="수정완료" class="btn btn-sm btn-primary"/>
+                <button class="btn btn-sm btn-primary" onclick="updateClose()" type="button">취소</button>
             </div>
             </form>
         <!-- 전체 틀 끝 -->
@@ -57,7 +69,7 @@
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
         // 목록 버튼 클릭 함수
-        function btnList(){
+        function updateClose(){
             location.href="faq.php";
         }
        

@@ -200,7 +200,7 @@ include 'dbconfig/config.php';
             }
             /* 페이징 번호 css */
 			.paging {
-				margin-bottom: 100px;
+				margin-bottom: 200px;
 			}
              /* 게시글 제목 css */
 			#faq-title {
@@ -227,7 +227,7 @@ include 'dbconfig/config.php';
 
             <!-- 글 쓰기 버튼 시작 -->
             <div id="faq-write">
-                <a href="faqwrite.php" class="btn btn-primary">글쓰기</a>                
+                <a href="faqInsert.php" class="btn btn-primary">글쓰기</a>                
             <!-- 글 쓰기 버튼 끝 -->
             </div>
             
@@ -268,7 +268,7 @@ include 'dbconfig/config.php';
 
 						<td class="title">
 
-							<a id="faq-title" href="faq.php?title=<?php echo $row['title']?>"><?php echo $row['title']?></a>
+							<a id="faq-title" href="faqboard.php?title=<?php echo $row['title']?>"><?php echo $row['title']?></a>
 
 						</td>
 

@@ -30,7 +30,7 @@
     <div id="headers"></div>
 
     <div class="container-fluid">
-    hellow world low right left center sibure 개 빡친다 .... 시발 디자인 죽이고 싶네..
+    
         <div>
             <h2>오늘의 책</h2>
         </div>

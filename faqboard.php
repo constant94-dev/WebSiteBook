@@ -1,3 +1,24 @@
+<?php
+include 'dbconfig/config.php';
+session_start();
+$title = $_GET['title'];
+$sql = "SELECT * FROM bct_board WHERE title='$title'";
+$result = $db->query($sql);
+
+$row=mysqli_fetch_assoc($result);
+$id = $row['id'];
+$hit = $row['hit'];
+$user = $_SESSION['membername'];
+if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때    
+    setcookie($user.$id, 1);
+    $updatehit = 1+$hit;
+    $hitsql = mysqli_query($db,"UPDATE bct_board SET hit = $updatehit WHERE id = '$id'");
+} else { // 해당 쿠키가 존재할 때    
+    echo "쿠키가 이미 존재하니 조회수가 증가하지 않습니다";
+    //setcookie($id, "", time() - 3600); //만료시간을 3600초 전으로 셋팅하여 확실히 제거
+}
+
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,19 +48,21 @@
         <div id="headers"></div>
         <!-- 전체 틀 시작 -->
         <div class="container">
-            <h2 id="faqwrite-title">글쓰기</h2>
-            <form action="faqInsertSuccess.php" method="post">
+            <h2 id="faqwrite-title">작성된 글</h2>
+            <hr/>
+            <form action="faqUpdate.php?title=<?php echo $row['title'];?>" method="post">
             <div class="mb-3">
                 <label for="title">제목</label>
-                <input class="form-control" id="title" name="title" placeholder="제목을 입력해 주세요" type="text">
+                <div><strong><?php echo $row['title'];?></strong></div>                
             </div>
+            <hr/>
             <div class="mb-3">
                 <label for="title">내용</label>
-                <textarea class="form-control" id="content" name="content" placeholder="내용을 입력해 주세요" rows="5"></textarea>
+                <div><?php echo $row['content'];?></div>
             </div>            
             <div id="faqwrite-list">
-                <input type="submit" value="저장" class="btn btn-sm btn-primary"/>
-                <button class="btn btn-sm btn-primary" onclick="btnList()" type="button">목록</button>
+                <input type="submit" value="수정" class="btn btn-sm btn-primary"/>
+                <button class="btn btn-sm btn-primary" onclick="deleteBtn()" type="button">삭제</button>
             </div>
             </form>
         <!-- 전체 틀 끝 -->
@@ -57,8 +80,8 @@
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
         // 목록 버튼 클릭 함수
-        function btnList(){
-            location.href="faq.php";
+        function deleteBtn(){
+            location.href="faqDelete.php?id=<?php echo $id;?>";
         }
        
         // html 구조 다 불러오고 실행하는 함수
