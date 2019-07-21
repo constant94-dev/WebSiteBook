@@ -268,7 +268,7 @@ include 'dbconfig/config.php';
 
 						<td class="title">
 
-							<a id="faq-title" href="faqboard.php?title=<?php echo $row['title']?>"><?php echo $row['title']?></a>
+							<a id="faq-title" href="faqboard.php?board_num=<?php echo $row['id']?>"><?php echo $row['title']?></a>
 
 						</td>
 

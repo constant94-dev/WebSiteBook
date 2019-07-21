@@ -8,13 +8,16 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     
     <style type="text/css">
-    /* 전체 a 태그 css */
-         a {
+        /* 전체 a 태그 css */
+        .footer-link {
             text-decoration: none;
             color: #ffffff;
         }
-        /* 전체 li 태크 css */
-        li {
+        .footer-link:hover {
+            text-decoration: none;
+        }
+        /* li 태크 css */
+        .footer-item {
             list-style-type: none;
             float: left;
             margin-left: 14px;
@@ -38,14 +41,14 @@
 
     <div class="footer">
         <ul>
-            <li>
-                <a href="#">회사소개</a>
+            <li class="footer-item">
+                <a href="#" class="footer-link">회사소개</a>
             </li>
-            <li>
-                <a href="#">이용약관</a>
+            <li class="footer-item">
+                <a href="#" class="footer-link">이용약관</a>
             </li>
-            <li>
-                <a href="#">개인정보처리방침</a>
+            <li class="footer-item">
+                <a href="#" class="footer-link">개인정보처리방침</a>
             </li>
         </ul>
     </div>

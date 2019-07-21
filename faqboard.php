@@ -1,14 +1,20 @@
 <?php
 include 'dbconfig/config.php';
 session_start();
-$title = $_GET['title'];
-$sql = "SELECT * FROM bct_board WHERE title='$title'";
-$result = $db->query($sql);
 
-$row=mysqli_fetch_assoc($result);
-$id = $row['id'];
-$hit = $row['hit'];
-$user = $_SESSION['membername'];
+
+    $faqid = $_GET['board_num'];
+    $sql = "SELECT * FROM bct_board WHERE id='$faqid'";
+    $result = $db->query($sql);
+    
+    $row=mysqli_fetch_assoc($result);
+    $id = $row['id'];
+    $hit = $row['hit'];
+    $name =$row['user'];
+    $user = $_SESSION['membername'];
+
+
+
 if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때    
     setcookie($user.$id, 1);
     $updatehit = 1+$hit;
@@ -27,18 +33,71 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
         <!-- 부트스트랩 4.3.1 버전 css 파일 -->
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
-
+        <link href="https://fonts.googleapis.com/css?family=Cute+Font|Jua|Sunflower:300,500,700&display=swap&subset=korean" rel="stylesheet">
         <style type="text/css">
+        .comment-box {
+            background-color: #f9f9f9;
+            margin-bottom: 100px;
+            margin-top:100px;
+        }
+        .active-amber-textarea.md-form label.active {
+            color: #ffa000;
+        }
+        .amber-textarea textarea.md-textarea:focus:not([readonly]) {
+            border-bottom: 1px solid #ffa000;
+            box-shadow: 0 1px 0 0 #ffa000;
+        }
+        .amber-textarea.md-form .prefix.active {
+            color: #ffa000;
+        }
+        .active-amber-textarea.md-form textarea.md-textarea:focus:not([readonly])+label {
+            color: #ffa000;
+        }
+
         /* 글쓰기 텍스트 css */
         #faqwrite-title {
             margin-top:100px;
             margin-bottom:50px;
+            font-family: 'Sunflower', sans-serif;
         }
         /* 목록 버튼 css */
         #faqwrite-list{
-            margin-bottom:300px;
+            margin-bottom:100px;
         }
-
+        .input-group {
+            margin-bottom:100px;
+        }
+        .comment-input {
+            margin-top: 10px;
+            margin-bottom:100px;
+            width: 100%;
+        }
+        .comment-btn {
+            position: relative;
+            width: 90px;
+            text-align: right;
+            vertical-align: bottom;
+        }
+        .comment-submit {
+            width: 85px;
+            height: 135px;
+            border: 1px solid #ccc;
+            background: #fff !important;            
+            text-align: center;
+        }
+        #comment-regist {
+            height: 134px;
+            width: 80px;
+        }
+        .oneDepth, .twoDepth {
+            list-style:none;
+            padding-left:0px;
+        }
+        .comment-title{
+            font-family: 'Jua', sans-serif;
+            font-size: 25px;
+        }
+        
         </style>
     </head>
 
@@ -46,6 +105,7 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
     <body>
         <!-- 상단에 고정된 헤더 파일 include -->
         <div id="headers"></div>
+
         <!-- 전체 틀 시작 -->
         <div class="container">
             <h2 id="faqwrite-title">작성된 글</h2>
@@ -59,14 +119,61 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             <div class="mb-3">
                 <label for="title">내용</label>
                 <div><?php echo $row['content'];?></div>
-            </div>            
-            <div id="faqwrite-list">
-                <input type="submit" value="수정" class="btn btn-sm btn-primary"/>
-                <button class="btn btn-sm btn-primary" onclick="deleteBtn()" type="button">삭제</button>
             </div>
+            <?php
+            if($user == $name){
+            ?>
+                <div id="faqwrite-list">                
+                    <input type="submit" value="수정" class="btn btn-sm btn-primary"/>
+                    <button class="btn btn-sm btn-primary" onclick="deleteBtn()" type="button">삭제</button>
+                </div>
+            <?php } ?>            
             </form>
-        <!-- 전체 틀 끝 -->
+        
+        
+        <!-- 댓글 기능 전체 틀 시작 -->
+        <div class="comment-box">     
+
+            <!--Textarea 폼 시작-->
+            <div class="md-form amber-textarea active-amber-textarea">
+                <p class="comment-title">댓글</p>  
+            
+            <!-- 댓글 리스트 시작 -->
+            <div id="commentView">
+
+
+
+            <!-- 댓글 리스트 끝 -->
+            </div>
+
+            
+            <form id="comment-form">
+            <!-- talbe 전체 틀 시작  -->
+            <input type="hidden" name="board_num" id="board_num" value="<?php echo $id?>">
+            <table>
+                    <tr>
+                        <td class="comment-input">
+                            <textarea id="form22" class="md-textarea form-control" rows="5" name="comment_content"></textarea>  
+                        </td>
+                        <td class="comment-btn">
+                            <div class="comment-submit">
+                                <button type="submit" class="btn btn-default" id="comment-regist">등록</button>
+                            </div>
+                        </td>
+                    </tr>
+            <!-- talbe 전체 틀 끝  -->
+            </table>
+            </form>
+            <!--Textarea 폼 끝 -->
+            </div>
+
+        <!-- 댓글 기능 전체 틀 끝 -->
         </div>
+
+
+        
+    <!-- 전체 틀 끝 -->
+    </div>
 
         <!-- 하단에 고정된 푸터 파일 include -->
         <div id="footers"></div>
@@ -79,7 +186,56 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         <!-- 부트스트랩 4.3.1 버전 js 파일 -->
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
-        // 목록 버튼 클릭 함수
+
+$(document).ready(function(){
+		getAllList();
+	});
+
+	var str = "";
+
+	function getAllList(){
+		var board_num = $("#board_num").val();
+
+		console.log("getAllList()");
+		console.log("board_num" + board_num);
+
+		$.getJSON("commentList.php?board_num="+board_num, function(data){
+			console.log(data);
+
+			$(data).each(function(){
+				console.log(data);
+
+				str += "<ul class='oneDepth'><li><div><strong>작성자 : "+this.comment_name+"</strong><strong>작성날짜 : " + 
+					this.comment_date + "</strong><p>" + 
+					this.comment_content + "</p></div></li></ul>";
+			});
+
+			$("#commentView").html(str);
+		});
+	}
+
+        // ajax 사용하여 댓글 작성하기
+        $(document).on("click", "#comment-regist", function() {
+		
+
+		var formData = $("#comment-form").serialize();
+
+		$.ajax({
+			type : 'POST',
+			url : 'commentInsert.php',
+			data : formData,
+			success : function(response){
+				if(response == 'success'){
+					alert("success");
+					getAllList();
+					
+				}
+			}
+		});
+    });
+
+
+        // 삭제 버튼 클릭 함수
         function deleteBtn(){
             location.href="faqDelete.php?id=<?php echo $id;?>";
         }

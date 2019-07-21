@@ -9,14 +9,20 @@ session_start();
 
     <!-- 부트스트랩 4.3.1 버전 css 파일 -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-
+    <link href="https://fonts.googleapis.com/css?family=Cute+Font|Jua|Sunflower:300,500,700&display=swap&subset=korean" rel="stylesheet">
+    <!-- 
+        구글 폰트 사용하고 싶으면 밑에 적어놓은 것과 같이 css에 선언해주어야 한다
+        font-family: 'Jua', sans-serif;
+        font-family: 'Sunflower', sans-serif;
+        font-family: 'Cute Font', cursive; 
+    -->
     <style type="text/css">
         /* 전체 이미지 태그 css */
         img {
             width: 150px;
         }
         /* 전체 a 태그 css */
-        a {
+        .nav-link {
             text-decoration: none;
             color: #ffffff;            
         }
