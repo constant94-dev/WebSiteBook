@@ -20,7 +20,7 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
     $updatehit = 1+$hit;
     $hitsql = mysqli_query($db,"UPDATE bct_board SET hit = $updatehit WHERE id = '$id'");
 } else { // 해당 쿠키가 존재할 때    
-    echo "쿠키가 이미 존재하니 조회수가 증가하지 않습니다";
+    //echo "쿠키가 이미 존재하니 조회수가 증가하지 않습니다";
     //setcookie($id, "", time() - 3600); //만료시간을 3600초 전으로 셋팅하여 확실히 제거
 }
 
@@ -89,7 +89,7 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             height: 134px;
             width: 80px;
         }
-        .oneDepth, .twoDepth {
+        .oneDepth {
             list-style:none;
             padding-left:0px;
         }
@@ -97,7 +97,24 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             font-family: 'Jua', sans-serif;
             font-size: 25px;
         }
-        
+        .comment-update, .comment-delete {
+            float:right;
+            color: #000000;
+            font-family: 'Sunflower', sans-serif;
+        }
+        .comment-update:hover, .comment-delete:hover {
+            text-decoration: none;
+        }
+        #comment-update {
+            height: 85px;
+            width: 80px;
+        }
+        .comment-update-submit {
+            height: 85px;
+            border: 1px solid #ccc;
+            background: #fff !important;            
+            text-align: center;
+        }
         </style>
     </head>
 
@@ -132,22 +149,18 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         
         
         <!-- 댓글 기능 전체 틀 시작 -->
-        <div class="comment-box">     
-
-            <!--Textarea 폼 시작-->
-            <div class="md-form amber-textarea active-amber-textarea">
-                <p class="comment-title">댓글</p>  
-            
+        <div class="comment-box">            
+            <p class="comment-title">댓글</p>            
             <!-- 댓글 리스트 시작 -->
             <div id="commentView">
 
-
-
             <!-- 댓글 리스트 끝 -->
             </div>
-
             
-            <form id="comment-form">
+            
+            <!--Textarea 폼 시작-->
+            <div class="md-form amber-textarea active-amber-textarea">
+            <form id="comment-form" action="commentInsert.php" method="post">
             <!-- talbe 전체 틀 시작  -->
             <input type="hidden" name="board_num" id="board_num" value="<?php echo $id?>">
             <table>
@@ -166,7 +179,7 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             </form>
             <!--Textarea 폼 끝 -->
             </div>
-
+            
         <!-- 댓글 기능 전체 틀 끝 -->
         </div>
 
@@ -186,53 +199,120 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         <!-- 부트스트랩 4.3.1 버전 js 파일 -->
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
+// html 구조 다 불러오고 실행하는 함수
+$(document).ready(function () {
 
-$(document).ready(function(){
-		getAllList();
-	});
+$("#headers").load("header.php");  // 원하는 파일 경로를 삽입하면 된다
+$("#footers").load("footer.html");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
+// 데이터베이스에 저장된 댓글 전부 불러오기
+getAllList();
+});
 
-	var str = "";
-
+    // 데이터베이스에 저장된 댓글 전부 불러오는 기능
 	function getAllList(){
-		var board_num = $("#board_num").val();
+		// id 가 board_num을 찾아 value 값을 변수에 저장한다
+        var board_num = $("#board_num").val();
 
-		console.log("getAllList()");
-		console.log("board_num" + board_num);
+        // 브라우저 개발자 도구 콘솔에 출력할 내용
+		console.log("getAllList() 실행중이야...");        
+		console.log("board_num : " + board_num);
 
-		$.getJSON("commentList.php?board_num="+board_num, function(data){
-			console.log(data);
+            // 데이터베이스 댓글 불러오기 ajax 시작
+		    $.ajax({
+			    type : 'POST',
+			    url : 'commentList.php',
+			    data : {board_num: board_num},
+                dataType: 'json'
+            }) // 데이터베이스 댓글 불러오기 ajax 끝
+            .done(function(data) {
+                // 변수 생성
+                var html = "";
+                //alert( "success" );
+                console.log(data);
+                $.each(data, function(key, value){
+                    
+                    html += '<ul class="oneDepth">';
+                    html += '<li>';
+                    html += '<div>';
+                    html += '<hr>';
+                    html += '<input type="hidden" value=' + value.comment_num + '>';
+                    html += '<strong>' + value.comment_num +' / '+ value.comment_name + '</strong>';
+                    html += '&#9;&#9;<span>' + value.comment_date + '</span>';                    
+                    html += '<a href="#" class="comment-delete" reply_id=' + value.comment_num+'>' + '&nbsp;삭제&nbsp;' + '</a>';
+                    html += '<a href="#" class="comment-update" reply_id=' + value.comment_num+'>' + '&nbsp;수정&nbsp;' + '</a>';
+                    html += '<p>' + value.comment_content + '</p>';                    
+                    html += '</div>';
+                    html += '</li>';
+                    html += '</ul>';
+                });
+                console.log(html);
+                $("#commentView").html(html);
+            })
+            .fail(function(request,status,error) {
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+            })
+            .always(function() {
+                //alert( "complete" );
+            });
+	} // getAllList() 끝
 
-			$(data).each(function(){
-				console.log(data);
+        // ajax 사용하여 댓글 수정하기 기능 시작
+        $(document).on("click", ".comment-update", function() {
+            console.log('댓글 수정 클릭 했어!');
+            var reply_id = $(this).attr("reply_id");
+            console.log(reply_id);
+            // 데이터베이스 댓글 수정 기능 ajax 시작
+            $.ajax({
+			    type : 'POST',
+			    url : 'commentUpdate.php',
+			    data : {reply_id: reply_id}                
+            }) // 데이터베이스 댓글 수정 기능 ajax 끝
+                    // ajax 통신 성공했을 때
+                    .done(function (data) {
+                        console.log(data);
+                        
+                    })
+                    // ajax 통신 실패했을 때
+                    .fail(function (request, status, error) {
+                        alert("code = " + request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+                    });
 
-				str += "<ul class='oneDepth'><li><div><strong>작성자 : "+this.comment_name+"</strong><strong>작성날짜 : " + 
-					this.comment_date + "</strong><p>" + 
-					this.comment_content + "</p></div></li></ul>";
-			});
+            // var html = "";
+            
+            // html += '<div class="md-form amber-textarea active-amber-textarea">';
+            // html += '<form id="comment-form">';
+            // html += '<input type="hidden" name="board_num" id="board_num" value="<?php echo $id?>">';
+            // html += '<hr>';
+            // html += '<table>';
+            // html += '<tr>';
+            // html += '<td>';
+            // html += '<strong id="comment_name_update">' + comment_name_update + '</strong>';
+            // html += '&#9;&#9;<span id="comment_date_update">' + comment_date_update + '</span>';
+            // html += '</td>';
+            // html += '</tr>';
+            // html += '<tr>';
+            // html += '<td class="comment-input">';
+            // html += '<textarea id="form22" class="md-textarea form-control" rows="3" name="comment_content">' + comment_content_update + '</textarea>';
+            // html += '</td>';
+            // html += '<td class="comment-btn">';
+            // html += '<div class="comment-update-submit">';
+            // html += '<button type="submit" class="btn btn-default" id="comment-update">' + '수정' + '</button>';
+            // html += '</div>';
+            // html += '</td>';
+            // html += '</tr>';
+            // html += '</table>';
+            // html += '<hr>';
+            // html += '</form>';
+            // html += '</div>';            
 
-			$("#commentView").html(str);
-		});
-	}
+            // $('#commentView').html(html);
+        }); // ajax 사용하여 댓글 수정하기 기능 끝
 
-        // ajax 사용하여 댓글 작성하기
-        $(document).on("click", "#comment-regist", function() {
-		
-
-		var formData = $("#comment-form").serialize();
-
-		$.ajax({
-			type : 'POST',
-			url : 'commentInsert.php',
-			data : formData,
-			success : function(response){
-				if(response == 'success'){
-					alert("success");
-					getAllList();
-					
-				}
-			}
-		});
-    });
+        // ajax 사용하여 댓글 삭제하기 기능 시작
+        $(document).on("click", ".comment-delete", function() {
+            console.log('댓글 삭제 클릭 했어!');
+            
+        }); // ajax 사용하여 댓글 삭제하기 기능 끝
 
 
         // 삭제 버튼 클릭 함수
@@ -240,13 +320,7 @@ $(document).ready(function(){
             location.href="faqDelete.php?id=<?php echo $id;?>";
         }
        
-        // html 구조 다 불러오고 실행하는 함수
-        $(document).ready(function () {
-
-            $("#headers").load("header.php");  // 원하는 파일 경로를 삽입하면 된다
-            $("#footers").load("footer.html");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
-
-        });
+        
     </script>
     </body>
 </html>

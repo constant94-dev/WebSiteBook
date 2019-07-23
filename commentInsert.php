@@ -2,6 +2,8 @@
 include 'dbconfig/config.php';
 session_start();
 
+
+
     // 댓글이 작성될 게시판 고유 번호
     $board_num = $_POST['board_num'];
     // 댓글 내용	
@@ -9,19 +11,24 @@ session_start();
     // 댓글 작성한 사용자 이름
 	$comment_name = $_SESSION['membername'];	
 
-	$sql = "INSERT INTO bct_board_comment(board_num, comment_name, comment_content, comment_date) VALUES('$board_num','$comment_name','$comment_content','now()')";
+ 
+    $sql = "INSERT INTO bct_board_comment(board_num, comment_name, comment_content, comment_date) VALUES('$board_num','$comment_name','$comment_content',now())";    
     
-	$result = $db->query($sql);
+    // 데이터베이스에 sql 명령어 보내서 나온 결과값 result 변수에 저장
+    $result = $db->query($sql);
+    if($result == false){
+    // 데이터베이스에 날린 query가 동작하지 않는다면 보여주는 출력
+    echo mysqli_error($db);
+    }
 
-    // INSERT 명령으로 입력된 바로 그값의 PK(Primary Key)를 가져오는 명령을 수행합니다.
-	$comment_num = $db->insert_id;
 
-	$sql = 'UPDATE bct_board_comment SET comment_depth = comment_num WHERE comment_num = ' . $comment_num;
-
-	$result = $db->query($sql);
-
-	if($result){
-		echo "success";
-	}
-
+    if($result) {
 ?>
+    <script>
+
+		alert('댓글이 정상적으로 작성되었습니다.');
+
+		location.replace("./faqboard.php?board_num=<?php echo $board_num?>");
+
+	</script>
+<?php } ?>
