@@ -35,6 +35,9 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css?family=Cute+Font|Jua|Sunflower:300,500,700&display=swap&subset=korean" rel="stylesheet">
         <style type="text/css">
+        ul li {
+            list-style-type: none;
+        }
         .comment-box {
             background-color: #f9f9f9;
             margin-bottom: 100px;
@@ -231,21 +234,21 @@ getAllList();
                 console.log(data);
                 $.each(data, function(key, value){
                     
-                    html += '<ul class="oneDepth">';
+                    html += '<ul class=oneDepth'+value.comment_num+'>';
                     html += '<li>';
                     html += '<div>';
                     html += '<hr>';
-                    html += '<input type="hidden" value=' + value.comment_num + '>';
-                    html += '<strong>' + value.comment_num +' / '+ value.comment_name + '</strong>';
-                    html += '&#9;&#9;<span>' + value.comment_date + '</span>';                    
+                    html += "<input type='hidden' value='<?php echo $id?>'>";
+                    html += '<strong id=name'+value.comment_num+'>' + value.comment_num +' / '+ value.comment_name + '</strong>';
+                    html += '&#9;&#9;<span id=date'+value.comment_num+'>' + value.comment_date + '</span>';                    
                     html += '<a href="#" class="comment-delete" reply_id=' + value.comment_num+'>' + '&nbsp;삭제&nbsp;' + '</a>';
                     html += '<a href="#" class="comment-update" reply_id=' + value.comment_num+'>' + '&nbsp;수정&nbsp;' + '</a>';
-                    html += '<p>' + value.comment_content + '</p>';                    
+                    html += '<p id=content'+value.comment_num+'>' + value.comment_content + '</p>';                    
                     html += '</div>';
                     html += '</li>';
                     html += '</ul>';
                 });
-                console.log(html);
+                //console.log(html);
                 $("#commentView").html(html);
             })
             .fail(function(request,status,error) {
@@ -259,58 +262,100 @@ getAllList();
         // ajax 사용하여 댓글 수정하기 기능 시작
         $(document).on("click", ".comment-update", function() {
             console.log('댓글 수정 클릭 했어!');
-            var reply_id = $(this).attr("reply_id");
-            console.log(reply_id);
-            // 데이터베이스 댓글 수정 기능 ajax 시작
-            $.ajax({
-			    type : 'POST',
-			    url : 'commentUpdate.php',
-			    data : {reply_id: reply_id}                
-            }) // 데이터베이스 댓글 수정 기능 ajax 끝
-                    // ajax 통신 성공했을 때
-                    .done(function (data) {
-                        console.log(data);
-                        
-                    })
-                    // ajax 통신 실패했을 때
-                    .fail(function (request, status, error) {
-                        alert("code = " + request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
-                    });
-
-            // var html = "";
+            // 수정할 댓글 번호
+            var update_reply_id = $(this).attr('reply_id');
+            console.log(update_reply_id);
+            // 수정할 댓글 번호를 사용하여 댓글 내용 가져오기
+            var content = document.getElementById('content'+update_reply_id).innerHTML; 
+            //console.log(content);
+            var name = document.getElementById('name'+update_reply_id).innerHTML; 
+            //console.log(name);
+            var date = document.getElementById('date'+update_reply_id).innerHTML; 
+            //console.log(date);
+            // 댓글 수정 폼 만들기 위한 변수
+            var html = "";
             
-            // html += '<div class="md-form amber-textarea active-amber-textarea">';
-            // html += '<form id="comment-form">';
-            // html += '<input type="hidden" name="board_num" id="board_num" value="<?php echo $id?>">';
-            // html += '<hr>';
-            // html += '<table>';
-            // html += '<tr>';
-            // html += '<td>';
-            // html += '<strong id="comment_name_update">' + comment_name_update + '</strong>';
-            // html += '&#9;&#9;<span id="comment_date_update">' + comment_date_update + '</span>';
-            // html += '</td>';
-            // html += '</tr>';
-            // html += '<tr>';
-            // html += '<td class="comment-input">';
-            // html += '<textarea id="form22" class="md-textarea form-control" rows="3" name="comment_content">' + comment_content_update + '</textarea>';
-            // html += '</td>';
-            // html += '<td class="comment-btn">';
-            // html += '<div class="comment-update-submit">';
-            // html += '<button type="submit" class="btn btn-default" id="comment-update">' + '수정' + '</button>';
-            // html += '</div>';
-            // html += '</td>';
-            // html += '</tr>';
-            // html += '</table>';
-            // html += '<hr>';
-            // html += '</form>';
-            // html += '</div>';            
+            html += '<div class="md-form amber-textarea active-amber-textarea">';            
+            html += '<input type="hidden" name="board_num" id="board_num" value="<?php echo $id?>">';
+            html += '<hr>';
+            html += '<table>';
+            html += '<tr>';
+            html += '<td>';
+            html += '<strong>' + name + '</strong>';
+            html += '&#9;&#9;<span>' + date + '</span>';
+            html += '</td>';
+            html += '</tr>';
+            html += '<tr>';
+            html += '<td class="comment-input">';
+            html += '<textarea id="comment-update-content" class="md-textarea form-control" rows="3">' + content + '</textarea>';
+            html += '</td>';
+            html += '<td>';
+            html += '<div class="comment-submit" style="width:80px; height:85px;">';
+            html += '<button type="button" class="btn btn-default" style="height:85px;" id="comment-update-button">' + '수정' + '</button>';
+            html += '</div>';
+            html += '</td>';
+            html += '</tr>';
+            html += '</table>';
+            html += '<hr>';            
+            html += '</div>';            
 
-            // $('#commentView').html(html);
+            $('.oneDepth'+update_reply_id).html(html);
+
+            // 댓글 수정한 값 체크 기능 시작
+            $('#comment-update-content').change(function(){
+                var update_content = $("#comment-update-content").val();
+                
+                //console.log(input);
+                // 수정 버튼 클릭 이벤트 시작
+                $(document).on("click", "#comment-update-button", function() {
+                    console.log(update_reply_id);
+                    console.log(update_content);
+                    // 데이터베이스 댓글 수정 기능 ajax x1시작
+                    $.ajax({
+			            type : 'POST',
+			            url : 'commentUpdate.php',
+			            data : {
+                            update_reply_id: update_reply_id,
+                            update_content: update_content
+                        }                
+                    }) // 데이터베이스 댓글 수정 기능 ajax 끝
+                        // ajax 통신 성공했을 때
+                        .done(function (data) {
+                            console.log(data);
+                            getAllList();
+                        })
+                        // ajax 통신 실패했을 때
+                        .fail(function (request, status, error) {
+                            alert("code = " + request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+                        });
+                }); // 수정 버튼 클릭 이벤트 끝
+            }); // 댓글 수정한 값 체크 기능 끝
+            
         }); // ajax 사용하여 댓글 수정하기 기능 끝
 
         // ajax 사용하여 댓글 삭제하기 기능 시작
         $(document).on("click", ".comment-delete", function() {
             console.log('댓글 삭제 클릭 했어!');
+            // 삭제할 댓글 번호
+            var delete_reply_id = $(this).attr('reply_id');
+            console.log(delete_reply_id);
+            // 데이터베이스 댓글 수정 기능 ajax x1시작
+            $.ajax({
+			            type : 'POST',
+			            url : 'commentDelete.php',
+			            data : {
+                            delete_reply_id: delete_reply_id                            
+                        }                
+                    }) // 데이터베이스 댓글 수정 기능 ajax 끝
+                        // ajax 통신 성공했을 때
+                        .done(function (data) {
+                            console.log(data);
+                            getAllList();
+                        })
+                        // ajax 통신 실패했을 때
+                        .fail(function (request, status, error) {
+                            alert("code = " + request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+                        });
             
         }); // ajax 사용하여 댓글 삭제하기 기능 끝
 

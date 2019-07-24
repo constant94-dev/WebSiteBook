@@ -49,24 +49,28 @@
             <form role="form" action="join.php" method="post">
                 <div class="form-group">
                     <label for="inputName">성명</label>
-                    <input type="text" class="form-control" name="membername" placeholder="이름을 입력해 주세요">
+                    <input type="text" id="membername" class="form-control" name="membername" placeholder="이름을 입력해 주세요">                    
                 </div>
                 <div class="form-group">
                     <label for="InputEmail">이메일 주소</label>
-                    <input type="email" class="form-control" name="memberemail" placeholder="이메일 주소를 입력해주세요">
+                    <input type="email" id="memberemail" class="form-control" name="memberemail" placeholder="이메일 주소를 입력해주세요">
+                    <div class="checkEmail"></div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword">비밀번호</label>
-                    <input type="password" class="form-control" name="memberpassword" placeholder="비밀번호를 입력해주세요">
+                    <input type="password" id="memberpassword" class="form-control" name="memberpassword" placeholder="비밀번호를 입력해주세요">
+                    <div class="checkPassword"></div>
                 </div>
                 <div class="form-group">
                     <label for="inputPasswordCheck">비밀번호 확인</label>
-                    <input type="password" class="form-control" name="memberpasswordcheck"
+                    <input type="password" id="memberpasswordcheck" class="form-control" name="memberpasswordcheck"
                         placeholder="비밀번호 확인을 위해 다시한번 입력 해 주세요">
+                        <div class="checkRepassword"></div>
                 </div>
                 <div class="form-group">
                     <label for="inputMobile">휴대폰 번호</label>
-                    <input type="tel" class="form-control" name="memberphone" placeholder="휴대폰번호를 입력해 주세요">
+                    <input type="tel" id="memberphone" class="form-control" name="memberphone" placeholder="휴대폰번호를 입력해 주세요">
+                    <div class="checkPhone"></div>
                 </div>
 
                 <p id="gender-p">성별</p>
@@ -102,6 +106,10 @@
     <!-- 부트스트랩 4.3.1 버전 js 파일 -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
+
+        
+
+
         // 가입취소 버튼 클릭 함수
         function joinClose() {
             //alert('회원가입을 취소했습니다.');

@@ -3,7 +3,7 @@ include 'dbconfig/config.php';
 
 $board_num = $_POST['board_num'];
 
-	$sql = "SELECT * FROM bct_board_comment WHERE board_num = $board_num ORDER BY comment_date DESC";
+	$sql = "SELECT * FROM bct_board_comment WHERE board_num = $board_num ORDER BY comment_date ASC";
 
 	$result = mysqli_query($db,$sql) or die("Error :	" . mysqli_error($db));
 
