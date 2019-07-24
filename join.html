@@ -12,28 +12,40 @@
         div {
             text-align: center;
         }
+
         /* 전체 img 태그 css */
         img {
             margin: 50px;
         }
+
         /* 전체 label 태그 css */
         label {
             float: left;
         }
+
         /* 회원가입 폼 틀 css */
         .join-div {
             width: 500px;
             margin: 0 auto;
 
         }
+
         /* 성별 p 태그 css */
         #gender-p {
             text-align: left;
 
         }
+
         /* 성별 div 태그 css */
         #gender-div {
             margin-bottom: 30px;
+        }
+
+        .checkEmail, .checkPassword, .checkRepassword {
+            float: left;
+        }
+        .form-group {
+            height: 100px;
         }
     </style>
 
@@ -49,37 +61,39 @@
             <form role="form" action="join.php" method="post">
                 <div class="form-group">
                     <label for="inputName">성명</label>
-                    <input type="text" id="membername" class="form-control" name="membername" placeholder="이름을 입력해 주세요">                    
+                    <input type="text" id="username" class="form-control" name="username" placeholder="이름을 입력해 주세요">                    
                 </div>
                 <div class="form-group">
                     <label for="InputEmail">이메일 주소</label>
-                    <input type="email" id="memberemail" class="form-control" name="memberemail" placeholder="이메일 주소를 입력해주세요">
+                    <input type="email" id="useremail" class="form-control" name="useremail"
+                        placeholder="이메일 주소를 입력해주세요">
                     <div class="checkEmail"></div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword">비밀번호</label>
-                    <input type="password" id="memberpassword" class="form-control" name="memberpassword" placeholder="비밀번호를 입력해주세요">
+                    <input type="password" id="userpassword" class="form-control" name="userpassword"
+                        placeholder="비밀번호를 입력해주세요">
                     <div class="checkPassword"></div>
                 </div>
                 <div class="form-group">
                     <label for="inputPasswordCheck">비밀번호 확인</label>
-                    <input type="password" id="memberpasswordcheck" class="form-control" name="memberpasswordcheck"
+                    <input type="password" id="userpasswordcheck" class="form-control" name="userpasswordcheck"
                         placeholder="비밀번호 확인을 위해 다시한번 입력 해 주세요">
-                        <div class="checkRepassword"></div>
+                    <div class="checkRepassword"></div>
                 </div>
                 <div class="form-group">
                     <label for="inputMobile">휴대폰 번호</label>
-                    <input type="tel" id="memberphone" class="form-control" name="memberphone" placeholder="휴대폰번호를 입력해 주세요">
+                    <input type="tel" id="userphone" class="form-control" name="userphone" placeholder="휴대폰번호를 입력해 주세요">
                     <div class="checkPhone"></div>
                 </div>
 
                 <p id="gender-p">성별</p>
                 <div class="custom-control custom-radio">
-                    <input type="radio" name="membergender" value="MAN" id="jb-radio-1" class="custom-control-input">
+                    <input type="radio" name="usergender" value="MAN" id="jb-radio-1" class="custom-control-input">
                     <label class="custom-control-label" for="jb-radio-1">MAN</label>
                 </div>
                 <div class="custom-control custom-radio" id="gender-div">
-                    <input type="radio" name="membergender" value="WOMAN" id="jb-radio-2" class="custom-control-input">
+                    <input type="radio" name="usergender" value="WOMAN" id="jb-radio-2" class="custom-control-input">
                     <label class="custom-control-label" for="jb-radio-2">WOMAN</label>
                 </div>
 
@@ -92,11 +106,11 @@
                     </button>
                 </div>
             </form>
-        <!-- 회원가입 폼 틀 끝 -->
+            <!-- 회원가입 폼 틀 끝 -->
         </div>
-    <!-- 전체 div 틀 끝 -->
+        <!-- 전체 div 틀 끝 -->
     </div>
-    
+
 
     <!-- 부트스트랩 4 버전 부터는 jQuery, popper 파일을 함께 적용시켜야 한다 -->
     <!-- 제이쿼리 3.4.1 버전 js 파일 -->
@@ -107,7 +121,90 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-        
+        // $('#username, #useremail, #userpassword, #userphone').keyup(function () {
+        //     var username = $('#username').val().length;
+        //     var useremail = $('#useremail').val().length;
+        //     var userpassword = $('#userpassword').val().length;
+        //     var userphone = $('#userphone').val().length;
+            
+        // });
+
+        // 이메일 중복 체크 기능 시작
+        $('#useremail').keyup(function(){
+            // 사용자가 입력한 이메일
+            var emailCheck = $('#useremail').val();
+            //console.log(emailCheck);
+            var html = "";
+            // 이메일 중복 체크 ajax 시작
+            $.ajax({
+			            type : 'POST',
+			            url : 'checkEmail.php',
+			            data : {
+                            emailCheck: emailCheck                            
+                        }                
+                    }) // 이메일 중복 체크 ajax 끝
+                        // ajax 통신 성공했을 때
+                        .done(function (data) {
+                            //console.log(data);
+                            
+                            // 이메일 중복
+                            if(data == 0){                                
+                                html += '<small class="text-danger">존재하는 이메일입니다</small>';
+                                $('.checkEmail').html(html);
+                            }
+                            // 이메일 중복 아님
+                            if(data == 1){                                
+                                html += '<small class="text-success">사용가능한 이메일입니다</small>';
+                                $('.checkEmail').html(html);
+                            }
+                        })
+                        // ajax 통신 실패했을 때
+                        .fail(function (request, status, error) {
+                            alert("code = " + request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+                        });
+
+        }); // 이메일 중복 체크 기능 끝
+
+        // 비밀번호 10 ~ 50 자리 체크 기능 시작
+        $('#userpassword').keyup(function(){
+            // 사용자가 입력한 비밀번호 길이 체크
+            var passwordCheck = $('#userpassword').val().length;
+            //console.log(passwordCheck);
+            var html = "";
+            // 10 ~ 50 자리 성공
+            if(passwordCheck >= 10 && passwordCheck <= 50){
+                html += '<small class="text-success">사용가능한 비밀번호입니다</small>';
+                $('.checkPassword').html(html);
+            }
+            // 10 ~ 50 자리 실패
+            else {
+                html += '<small class="text-danger">비밀번호는 10 ~ 50 자리 사이로 입력하세요</small>';
+                $('.checkPassword').html(html);
+            }
+
+        }); // 비밀번호 10 ~ 50 자리 체크 기능 끝
+
+        // 사용자가 입력한 비밀번호 다시 확인 기능 시작
+        $('#userpasswordcheck').keyup(function(){
+            var userpassword = $('#userpassword').val();
+            var userpasswordcheck = $('#userpasswordcheck').val();
+            console.log(userpassword);
+            console.log(userpasswordcheck);
+
+            var html = "";
+            // 입력한 비밀번호와 재입력 비밀번호 같다
+            if(userpassword === userpasswordcheck){
+                html += '<small class="text-success">입력한 비밀번호와 같습니다</small>';
+                $('.checkRepassword').html(html);
+            }
+            // 입력한 비밀번호와 재입력 비밀번호 다르다
+            else {
+                html += '<small class="text-danger">입력한 비밀번호와 다릅니다</small>';
+                $('.checkRepassword').html(html);
+            }
+
+        }); // 사용자가 입력한 비밀번호 다시 확인 기능 끝
+
 
 
         // 가입취소 버튼 클릭 함수
