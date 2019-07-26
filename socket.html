@@ -1,0 +1,83 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Socket</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom:
+                0;
+            width: 100%;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+        }
+
+        form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border:
+                none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id=”messages”></ul>
+    <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(() => {
+            // socket 연결 -> app.js에서 io.on('connection')이벤트가 발생
+            const socket = io();
+            $('form').submit(() => {
+                // 서버에게 보내는 기능 -> socket.on('chat message') 서버에서 받는 기능
+                // emit() 매개변수는 메시지 입니다
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                // 마지막으로 클라이언트가 접속을 끊으면 ->  on('disconnect') 이벤트 발생
+                return false;
+            });
+            socket.on('chat message', (msg) => {
+                $('#messages').append($('<li>').text(msg));
+            });
+        });
+    </script>
+</body>
+
+</html>
