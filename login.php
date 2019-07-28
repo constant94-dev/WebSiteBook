@@ -4,12 +4,12 @@ include 'dbconfig/config.php';
 // 변수가 이미 unset () 함수로 설정 해제 된 경우 더 이상 설정되지 않습니다. 
 // 테스트 변수가 NULL 값을 포함하면 isset () 함수는 false를 반환합니다
 
-if(!isset($_POST['memberemail']) || !isset($_POST['memberpassword'])) exit;
-$memberemail = $_POST['memberemail'];
-$memberpassword = $_POST['memberpassword'];
+if(!isset($_POST['user_email']) || !isset($_POST['user_password'])) exit;
+$user_email = $_POST['user_email'];
+$user_password = $_POST['user_password'];
 
 //아이디가 있는지 검사
-$query = "SELECT * FROM bct_join WHERE memberemail='$memberemail'";
+$query = "SELECT * FROM bct_join WHERE user_email='$user_email'";
 $result = $db->query($query);
 
         //아이디가 있다면 비밀번호 검사
@@ -20,11 +20,11 @@ $result = $db->query($query);
             $row=mysqli_fetch_assoc($result);
 
             //비밀번호가 맞다면 세션 생성
-            if($row['memberpassword']==$memberpassword){
+            if($row['user_password']==$user_password){
                     session_start();
-                    $_SESSION['memberemail']=$memberemail;
-                    $_SESSION['membername']=$row['membername'];
-                    if(isset($_SESSION['memberemail'])){
+                    $_SESSION['user_email']=$user_email;
+                    $_SESSION['user_name']=$row['user_name'];
+                    if(isset($_SESSION['user_email'])){
                         echo("<script>
                         alert('로그인 되었습니다.');
                         location.replace('index.html');

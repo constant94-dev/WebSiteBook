@@ -1,3 +1,7 @@
+<?php
+include 'dbconfig/config.php';
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -36,52 +40,10 @@
         </div>
 
         <div class="today-list">                 
-            <ul>
-            
-            <li>
-                <div class="today-image">
-                  <img src="image/algo.png"/>
-                </div>
-                <div class="category">[IT/교육]</div>
-                <div class="title">마스터 알고리즘</div>
-                <div class="summary">마이크로소프트 창업자 빌게이츠가 추천하는 이 시대 최고의 머신러닝 소개 책!</div>
-            </li>
-            <li>
-                <div class="today-image">
-                  <img src="image/algo.png"/>
-                </div>
-                <div class="category">[IT/교육]</div>
-                <div class="title">마스터 알고리즘</div>
-                <div class="summary">마이크로소프트 창업자 빌게이츠가 추천하는 이 시대 최고의 머신러닝 소개 책!</div>
-            </li>
-            <li>
-                <div class="today-image">
-                  <img src="image/algo.png"/>
-                </div>
-                <div class="category">[IT/교육]</div>
-                <div class="title">마스터 알고리즘</div>
-                <div class="summary">마이크로소프트 창업자 빌게이츠가 추천하는 이 시대 최고의 머신러닝 소개 책!</div>
-            </li>
-            <li>
-                <div class="today-image">
-                  <img src="image/algo.png"/>
-                </div>
-                <div class="category">[IT/교육]</div>
-                <div class="title">마스터 알고리즘</div>
-                <div class="summary">마이크로소프트 창업자 빌게이츠가 추천하는 이 시대 최고의 머신러닝 소개 책!</div>
-            </li>
-            
-            </ul>    
+           
         </div>
         
-        <div class="comments">
-            <h2>댓글</h2>
-            <form action="comment.php" method="get">
-                <textarea class="form-control" rows="3"></textarea>
-                <button type="button" class="btn btn-danger">취소</button>
-                <button type="submit" class="btn btn-primary">댓글</button>
-            </form>
-        </div>
+       
 
 
     </div>
@@ -96,8 +58,9 @@
     <!-- popper 1.15.0 버전 js 파일 -->
     <script src="js/popper.min.js"></script>
     <!-- 부트스트랩 4.3.1 버전 js 파일 -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>    
     <script type="text/javascript">
+
         // html 구조 다 불러오고 실행하는 함수
         $(document).ready(function () {
 
