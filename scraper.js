@@ -1,5 +1,4 @@
-
-
+document.write("<script type='text/javascript' src='dbconfig/config.js'><"+"/script>"); 
 // 브라우저와 Node 환경에서 사용하는 Promise 기반의 HTTP Client로 
 // 사이트의 HTML을 가져올 때 사용할 라이브러리 입니다.
 const axios = require("axios");
@@ -30,7 +29,7 @@ async function getHTML() {
 getHTML()
     .then(html => {
         let bookList = [];
-        html.data.decode('utf-8');
+        
         const $ = cheerio.load(html.data);
 
         // ul.list--posts를 찾고 그 children 노드를 bodyList에 저장
@@ -48,14 +47,7 @@ getHTML()
             cr_title = $(this).find("div.detail div.title strong").text();
             cr_author = $(this).find("div.detail div.pub_info span.author").text();
             cr_info = $(this).find("div.detail div.info span").text();
-            // 비밀번호는 별도의 파일로 분리해서 버전관리에 포함시키지 않아야 합니다. 
-            var connection = mysql.createConnection({
-                host: 'localhost',
-                port: '3306',
-                user: 'psj', // DB 계정
-                password: 'permissionchmodchown', // DB 계정 비밀번호
-                database: 'bct' // 접속할 DB
-            });
+            
             // mysql 접속
             connection.connect();
             // SQL문 실행

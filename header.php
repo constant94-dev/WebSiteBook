@@ -47,8 +47,8 @@ session_start();
         if(!isset($_SESSION['user_email']) || !isset($_SESSION['user_name'])){        
         ?>
         <a class="nav-link" href="#" onclick="domestic()">국내도서</a>
-        <a class="nav-link" href="#" onclick="foreign()">웹툰</a>
-        <a class="nav-link" href="#" onclick="best()">베스트셀러</a>
+        <a class="nav-link" href="#" onclick="foreign()">외국도서</a>
+        <a class="nav-link" href="#" onclick="best()">웹툰</a>
         <a class="nav-link" href="#" onclick="faq()">FAQ</a>
         <input type="button" class="btn btn-light" id="loginBtn" onclick="login()" value="로그인" />
         <input type="button" class="btn btn-light" id="joinBtn" onclick="join()" value="회원가입" />
