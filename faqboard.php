@@ -4,14 +4,18 @@ session_start();
 
 
     $faqid = $_GET['board_num'];
-    $sql = "SELECT * FROM bct_board WHERE id='$faqid'";
-    $result = $db->query($sql);
+    $boardSQL = "SELECT * FROM bct_board WHERE id='$faqid'";
+    $boardResult = $db->query($boardSQL);
     
-    $row=mysqli_fetch_assoc($result);
-    $id = $row['id'];
-    $hit = $row['hit'];
-    $name =$row['user'];
-    $user = $_SESSION['membername'];
+    $boardRow=mysqli_fetch_assoc($boardResult);
+    $id = $boardRow['id'];
+    $hit = $boardRow['hit'];
+
+    $commentSQL = "SELECT * FROM bct_board_comment WHERE board_num='$id'";
+    $commentResult = $db->query($commentSQL);
+    $commentRow=mysqli_fetch_assoc($commentResult);
+    $name =$commentRow['comment_name'];
+    $user = $_SESSION['user_name'];
 
 
 
@@ -130,24 +134,17 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         <div class="container">
             <h2 id="faqwrite-title">작성된 글</h2>
             <hr/>
-            <form action="faqUpdate.php?title=<?php echo $row['title'];?>" method="post">
+            <form action="faqUpdate.php?title=<?php echo $boardRow['title'];?>" method="post">
             <div class="mb-3">
                 <label for="title">제목</label>
-                <div><strong><?php echo $row['title'];?></strong></div>                
+                <div><strong><?php echo $boardRow['title'];?></strong></div>                
             </div>
             <hr/>
             <div class="mb-3">
                 <label for="title">내용</label>
-                <div><?php echo $row['content'];?></div>
+                <div><?php echo $boardRow['content'];?></div>
             </div>
-            <?php
-            if($user == $name){
-            ?>
-                <div id="faqwrite-list">                
-                    <input type="submit" value="수정" class="btn btn-sm btn-primary"/>
-                    <button class="btn btn-sm btn-primary" onclick="deleteBtn()" type="button">삭제</button>
-                </div>
-            <?php } ?>            
+                      
             </form>
         
         
@@ -240,9 +237,11 @@ getAllList();
                     html += '<hr>';
                     html += "<input type='hidden' value='<?php echo $id?>'>";
                     html += '<strong id=name'+value.comment_num+'>' + value.comment_num +' / '+ value.comment_name + '</strong>';
-                    html += '&#9;&#9;<span id=date'+value.comment_num+'>' + value.comment_date + '</span>';                    
+                    html += '&#9;&#9;<span id=date'+value.comment_num+'>' + value.comment_date + '</span>';
+                    html += '<?php if($user == $name){ ?>';
                     html += '<a href="#" class="comment-delete" reply_id=' + value.comment_num+'>' + '&nbsp;삭제&nbsp;' + '</a>';
                     html += '<a href="#" class="comment-update" reply_id=' + value.comment_num+'>' + '&nbsp;수정&nbsp;' + '</a>';
+                    html += '<?php } ?>';
                     html += '<p id=content'+value.comment_num+'>' + value.comment_content + '</p>';                    
                     html += '</div>';
                     html += '</li>';

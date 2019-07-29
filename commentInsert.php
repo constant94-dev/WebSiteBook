@@ -9,7 +9,7 @@ session_start();
     // 댓글 내용	
     $comment_content = $_POST['comment_content'];
     // 댓글 작성한 사용자 이름
-	$comment_name = $_SESSION['membername'];	
+	$comment_name = $_SESSION['user_name'];	
 
  
     $sql = "INSERT INTO bct_board_comment(board_num, comment_name, comment_content, comment_date) VALUES('$board_num','$comment_name','$comment_content',now())";    
