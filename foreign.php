@@ -16,7 +16,6 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
             width: 200px;
             height: 200px;
         }
-
         li {
             height: 217px;
             border-bottom: 1px solid #d1d1d1;

@@ -9,67 +9,40 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <style type="text/css">
         img {
-            width: 200px;
+            width: 150px;
             height: 200px;
+            border-right: 1px dotted #000000;
+            border-bottom: 1px dotted #000000;
         }
 
-        li {
-            height: 217px;
-            border-bottom: 1px solid #d1d1d1;
-        }
-
-        ul {
-            list-style: none;
+        .box {            
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- 국내도서 전체 틀 시작 -->
+    <!-- 웹툰 전체 틀 시작 -->
     <div class="container">
 
         <div>
-            <h2>국내 컴퓨터/IT</h2>
+            <h2>오늘의 웹툰</h2>
         </div>
 
-        <!-- best-list 시작 -->
-        <div class="best-list">
-            <ul>
-                <li>
-                    <div>
-                        <!-- 리스트 아이템 한줄 시작 -->
-                        <div class="info_area">
-                            <!-- 책 이미지 틀 시작 -->
-                            <div class="cover_wrap" style="float:left;">
-                                <div class="cover">
-                                    <img src="/image/bone.png">
-                                </div>
-                            <!-- 책 이미지 틀 끝 -->
-                            </div>
-                            <!-- 책 상세 정보 시작 -->
-                            <div class="detail" style="float:left; margin-left: 20px; margin-top: 20px;">
-                                <div class="book_title">
-                                    <a href="#">
-                                        <strong>책 제목</strong>
-                                    </a>
-                                </div>
-                                <div class="book_info">
-                                    <span class="author">책 글쓴이</span>
-                                </div>
-                                <div class="summary_info">
-                                    <span>책 요약 정보</span>
-                                </div>
-                            <!-- 책 상세 정보 끝 -->
-                            </div>
-                        <!-- 리스트 아이템 한줄 끝 -->
-                        </div>                        
-                    </div>
-                </li>                
-            </ul>
-        <!-- best-list 끝 -->
+        <!-- 웹툰 이미지 틀 시작 -->
+        <div>
+            <div style="float: left;" class="box">
+                <div><a href="#"><img src="/image/bone.png"></a></div>
+                <span>웹툰 제목1</span>
+            </div>            
+            <!-- 웹툰 이미지 틀 끝 -->
         </div>
-    <!-- 국내도서 전체 틀 끝 -->
+
+
+
+
+        <!-- 웹툰 전체 틀 끝 -->
     </div>
 
 

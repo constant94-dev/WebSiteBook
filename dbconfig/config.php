@@ -15,4 +15,6 @@ $db = mysqli_connect ($mysql_hostname, $mysql_user, $mysql_password) or die('Not
 // mysqli_select_db 함수는 mysqli_connect 를 통해 연결된 객체가 선택하고 있는 DB를 다른 DB로 바꾸기 위해 사용되어집니다.​
 // mysqli_select_db([연결 객체], [DB명]);
 mysqli_select_db($db, "bct") or die("cannot select DB");
+
+
 ?>
