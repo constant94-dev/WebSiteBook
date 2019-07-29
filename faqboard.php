@@ -206,7 +206,7 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
 $(document).ready(function () {
 
 $("#headers").load("header.php");  // 원하는 파일 경로를 삽입하면 된다
-$("#footers").load("footer.html");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
+$("#footers").load("footer.php");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
 // 데이터베이스에 저장된 댓글 전부 불러오기
 getAllList();
 });

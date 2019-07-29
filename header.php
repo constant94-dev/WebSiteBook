@@ -20,6 +20,7 @@ session_start();
         /* 전체 이미지 태그 css */
         img {
             width: 150px;
+            
         }
         /* 전체 a 태그 css */
         .nav-link {
@@ -58,8 +59,8 @@ session_start();
             $name = $_SESSION['user_name'];
             ?>
             <a class="nav-link" href="domestic.php">국내도서</a>
-            <a class="nav-link" href="#">웹툰</a>
-            <a class="nav-link" href="#">베스트셀러</a>
+            <a class="nav-link" href="foreign.php">외국도서</a>
+            <a class="nav-link" href="webtoon.php">웹툰</a>
             <a class="nav-link" href="faq.php">FAQ</a>
             <b class="user-name"><?php echo "$name 님";?></b>
             <input type="button" class="btn btn-light" id="logoutBtn" onclick="logout()" value="로그아웃" />
