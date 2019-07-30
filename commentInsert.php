@@ -1,4 +1,5 @@
 <?php
+// 외부에 존재하는 데이터베이스 연동 파일 include
 include 'dbconfig/config.php';
 session_start();
 
@@ -21,7 +22,7 @@ session_start();
     echo mysqli_error($db);
     }
 
-
+    // 댓글이 작성되었을 때 알림
     if($result) {
 ?>
     <script>

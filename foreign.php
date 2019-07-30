@@ -1,5 +1,6 @@
 <?php
 include 'dbconfig/config.php';
+// 교보문고 외국도서 크롤링한 정보 가져오는 sql문
 $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
 ?>
 <!DOCTYPE html>
@@ -12,22 +13,26 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
     <!-- 부트스트랩 4.3.1 버전 css 파일 -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <style type="text/css">
+        /* 책 이미지 css */
         .book_image {
             width: 200px;
             height: 200px;
         }
+        /* 전체 li 태그 css */
         li {
             height: 217px;
             border-bottom: 1px solid #d1d1d1;
         }
-
+        /* 전체 ul 태그 css */
         ul {
             list-style: none;
         }
+        /* 전체 틀 css */
         .container {
             margin-top:100px;
             margin-bottom: 100px;
         }
+        /* 본문 상단 제목 css */
         .domestic-category {
             margin-top: 100px;
             margin-bottom: 100px;
@@ -50,10 +55,15 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
 
         <?php
 			while($row = $sql->fetch_assoc()){
+                // 크롤링한 데이터 링크걸기 위한 변수
                 $link = $row['link'];
-                $pattern = "',";    
+                // 문자열 값 ',' 기준으로 나눈다
+                $pattern = "',";
+                // 내가 정한 기준으로 나눈 문자열 값
                 $jbexplode = explode($pattern,$link);
+                // 문자열 값 ' 기준으로 나눈다
                 $pattern2 = "'";
+                // 내가 정한 기준으로 나눈 문자열 값
                 $linkClass = explode($pattern2,$jbexplode[1]);
                 $barcode = explode($pattern2,$jbexplode[2]);
 		?>

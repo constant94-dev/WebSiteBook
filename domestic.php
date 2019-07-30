@@ -12,23 +12,26 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
     <!-- 부트스트랩 4.3.1 버전 css 파일 -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <style type="text/css">
+        /* 책 이미지 css */
         .book_image {
             width: 200px;
             height: 200px;
         }
-
+        /* 전체 li 태그 css */
         li {
             height: 217px;
             border-bottom: 1px solid #d1d1d1;
         }
-
+        /* 전체 ul 태그 css */
         ul {
             list-style: none;
         }
+        /* 전체 틀 css */
         .container {
             margin-top:100px;
             margin-bottom: 100px;
         }
+        /* 본문 상단 제목 css */
         .domestic-category {
             margin-top: 100px;
             margin-bottom: 100px;
@@ -50,6 +53,8 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
         </div>
 
         <?php
+            // 교보문고 국내도서 페이지 크롤링한 데이터
+            // 데이터 저장된 데이터베이스 값 출력하기위한 반복문
 			while($row = $sql->fetch_assoc()){
                 $link = $row['link'];
                 

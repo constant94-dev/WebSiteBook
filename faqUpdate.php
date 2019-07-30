@@ -1,11 +1,16 @@
 <?php
 include 'dbconfig/config.php';
 
+// 게시글 제목
 $title = $_GET['title'];
+// 게시글 정보 알아내기 위한 sql문
 $sql = "SELECT * FROM bct_board WHERE title='$title'";
+// 연동된 데이터베이스에 쿼리 보내기
 $result = $db->query($sql);
 
+// 쿼리 결과 값 저장할 변수
 $row=mysqli_fetch_assoc($result);
+// 게시글 번호
 $id = $row['id'];
 ?>
 <!DOCTYPE html>

@@ -2,19 +2,28 @@
 include 'dbconfig/config.php';
 session_start();
 
-
+    // 사용자가 클릭한 게시글 번호
     $faqid = $_GET['board_num'];
+    // 사용자가 클릭한 게시글에 조회수, 게시글 번호 알아내기 위한 sql문
     $boardSQL = "SELECT * FROM bct_board WHERE id='$faqid'";
+    // 연동된 데이터베이스에 쿼리 보내기
     $boardResult = $db->query($boardSQL);
-    
+    // 쿼리 결과 값을 저장할 변수
     $boardRow=mysqli_fetch_assoc($boardResult);
+    // 게시글 번호
     $id = $boardRow['id'];
+    // 게시글 조회수
     $hit = $boardRow['hit'];
 
+    // 게시글에 작성된 댓글 정보를 알아내기 위한 sql문
     $commentSQL = "SELECT * FROM bct_board_comment WHERE board_num='$id'";
+    // 연동된 데이터베이스에 쿼리 보내기
     $commentResult = $db->query($commentSQL);
+    // 쿼리 결과 값을 저장할 변수
     $commentRow=mysqli_fetch_assoc($commentResult);
+    // 게시글에 작성된 댓글 작성자 이름
     $name =$commentRow['comment_name'];
+    // 로그인한 사용자 이름
     $user = $_SESSION['user_name'];
 
 
@@ -39,24 +48,30 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css?family=Cute+Font|Jua|Sunflower:300,500,700&display=swap&subset=korean" rel="stylesheet">
         <style type="text/css">
+        /* 전체 ul li 태그 css */
         ul li {
             list-style-type: none;
         }
+        /* 댓글 ui 전체 틀 css */
         .comment-box {
             background-color: #f9f9f9;
             margin-bottom: 100px;
             margin-top:100px;
         }
+        /* 부트스트랩이 적용된 textarea css */
         .active-amber-textarea.md-form label.active {
             color: #ffa000;
         }
+        /* 부트스트랩이 적용된 textarea css */
         .amber-textarea textarea.md-textarea:focus:not([readonly]) {
             border-bottom: 1px solid #ffa000;
             box-shadow: 0 1px 0 0 #ffa000;
         }
+        /* 부트스트랩이 적용된 textarea css */
         .amber-textarea.md-form .prefix.active {
             color: #ffa000;
         }
+        /* 부트스트랩이 적용된 textarea css */
         .active-amber-textarea.md-form textarea.md-textarea:focus:not([readonly])+label {
             color: #ffa000;
         }
@@ -71,20 +86,24 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
         #faqwrite-list{
             margin-bottom:100px;
         }
+        
         .input-group {
             margin-bottom:100px;
         }
+        /* 댓글 입력 칸 css */
         .comment-input {
             margin-top: 10px;
             margin-bottom:100px;
             width: 100%;
         }
+        /* 댓글 등록 버튼 전체 틀 css */
         .comment-btn {
             position: relative;
             width: 90px;
             text-align: right;
             vertical-align: bottom;
         }
+        /* 댓글 등록 버튼 전체 틀 자식 css */
         .comment-submit {
             width: 85px;
             height: 135px;
@@ -92,30 +111,37 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             background: #fff !important;            
             text-align: center;
         }
+        /* 댓글 등록 버튼 css */
         #comment-regist {
             height: 134px;
             width: 80px;
         }
+        /* 댓글 리스트 목록 ul css */
         .oneDepth {
             list-style:none;
             padding-left:0px;
         }
+        /* 댓글 title css */
         .comment-title{
             font-family: 'Jua', sans-serif;
             font-size: 25px;
         }
+        /* 댓글 수정, 댓글 삭제 버튼 css */
         .comment-update, .comment-delete {
             float:right;
             color: #000000;
             font-family: 'Sunflower', sans-serif;
         }
+        /* 댓글 수정, 댓글 삭제 버튼 마우스 올렸을 때 css */
         .comment-update:hover, .comment-delete:hover {
             text-decoration: none;
         }
+        /* 댓글 수정 버튼 클릭시 나오는 댓글 수정 전체 틀 css */
         #comment-update {
             height: 85px;
             width: 80px;
         }
+        /* 댓글 수정 버튼 클릭시 나오는 댓글 수정 버튼 css */
         .comment-update-submit {
             height: 85px;
             border: 1px solid #ccc;

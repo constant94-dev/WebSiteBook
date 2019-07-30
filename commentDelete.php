@@ -1,4 +1,5 @@
 <?php
+// 외부에 존재하는 데이터베이스 연동 파일 include
 include 'dbconfig/config.php';
 
 // PHP 구문 분석기 오류는 익숙해 져 있습니다. 
@@ -8,11 +9,14 @@ include 'dbconfig/config.php';
 // if(!isset($_POST['reply_id'])){
 //     echo 'sibal';
 // }
+
+// 삭제할 댓글 번호 변수에 저장
 $reply_id = $_POST['delete_reply_id'];
 
-
+// mysqli_query 파라미터가 두개이어야 하고 첫번째 파라미터는 연동된 db 두번째 파라미터는 sql 명령문이다
 $sql = mysqli_query($db, "DELETE FROM bct_board_comment WHERE comment_num=$reply_id");
 
+// ajax 성공했을 때 보여줄 출력문
 echo "comment delete success";
 
 ?>

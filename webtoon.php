@@ -1,5 +1,6 @@
 <?php
 include 'dbconfig/config.php';
+// 네이버 웹툰 크롤링한 정보 가져오는 sql문
 $sql = mysqli_query($db, "SELECT * FROM bct_webtoon_crawl");
 ?>
 <!DOCTYPE html>
@@ -12,31 +13,32 @@ $sql = mysqli_query($db, "SELECT * FROM bct_webtoon_crawl");
     <!-- 부트스트랩 4.3.1 버전 css 파일 -->
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <style type="text/css">
+        /* 웹툰 이미지 css */
         .webtoon-image {
             width: 150px;
             height: 200px;
             border-right: 1px dotted #000000;
             border-bottom: 1px dotted #000000;            
         }
-
+        /* 웹툰 이미지, 제목 틀 css */
         .box {            
             text-align: center;
             margin-bottom: 100px;
             margin-right:30px;
         }
-
+        /* 전체 틀 css */
         .container {
             height:2500px;
         }
-
+        /* h2 전체 태그 css */
         h2{
             font-family: 'Jua', sans-serif;
         }
-
+        /* span 전체 태그 css */
         span {
             font-family: 'Jua', sans-serif;
         }
-
+        /* 본문 상단 제목 css */
         .head-title {
             margin-top: 50px;
             margin-bottom: 50px;
@@ -57,7 +59,7 @@ $sql = mysqli_query($db, "SELECT * FROM bct_webtoon_crawl");
         </div>
 
         <?php
-        
+            // 데이터베이스에서 가져온 웹툰 정보를 출력하기 위한 반복문
 			while($row = $sql->fetch_assoc()){
                 
         ?>        

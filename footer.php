@@ -60,7 +60,7 @@ session_start();
         <div class="footer">
             <ul>
                 <li class="footer-item">
-                    <a href="#" class="footer-link">회사소개</a>
+                    <a href="company.php" class="footer-link">회사소개</a>
                 </li>            
                 <li class="footer-item">
                     <a href="http://localhost:8888" class="footer-link">고객 채팅방</a>
