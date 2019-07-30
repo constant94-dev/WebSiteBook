@@ -50,10 +50,16 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
 
         <?php
 			while($row = $sql->fetch_assoc()){
-
+                $link = $row['link'];
+                $pattern = "',";    
+                $jbexplode = explode($pattern,$link);
+                $pattern2 = "'";
+                $linkClass = explode($pattern2,$jbexplode[1]);
+                $barcode = explode($pattern2,$jbexplode[2]);
 		?>
         <!-- best-list 시작 -->
         <div class="best-list">
+            
             <ul>
                 <li>
                     <div>
@@ -69,7 +75,7 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
                             <!-- 책 상세 정보 시작 -->
                             <div class="detail" style="margin-left: 220px; margin-top: 10px;">
                                 <div class="book_title">
-                                    <a href="#">
+                                    <a href="<?php echo 'http://www.kyobobook.co.kr/product/detailViewEng.laf?mallGb=ENG&ejkGb=ENG&linkClass=' . $linkClass[1] . '&barcode=' . $barcode[1] ?>">
                                         <strong><?php echo $row['title'] ?></strong>
                                     </a>
                                 </div>

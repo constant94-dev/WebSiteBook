@@ -8,5 +8,5 @@ var db = mysql.createConnection({
     database: 'bct' // 접속할 DB
 });
 
-db.connect();
+//db.connect();
 module.exports.db = db;

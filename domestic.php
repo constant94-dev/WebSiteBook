@@ -51,7 +51,8 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
 
         <?php
 			while($row = $sql->fetch_assoc()){
-
+                $link = $row['link'];
+                
 		?>
         <!-- best-list 시작 -->
         <div class="best-list">
@@ -70,7 +71,7 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
                             <!-- 책 상세 정보 시작 -->
                             <div class="detail" style="margin-left: 220px; margin-top: 10px;">
                                 <div class="book_title">
-                                    <a href="#">
+                                    <a href="<?php echo 'http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&linkClass=' . substr($link, 39, 2) . '&barcode=' . substr($link, 44, 13) ?>">
                                         <strong><?php echo $row['title'] ?></strong>
                                     </a>
                                 </div>

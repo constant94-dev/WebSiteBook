@@ -4,13 +4,19 @@ let cheerio = require('cheerio');
 let request = require('request');
 // 인코딩 문제 해결
 const iconv = require('iconv-lite');
-const mysql = require("mysql");
+// 데이터베이스 연결 모듈 불러오기
+const connection = require('./config.js');
+
 let requestOptions = {
     method: "GET",
     uri: "http://www.kyobobook.co.kr/categoryRenewal/categoryMain.laf?perPage=20&mallGb=KOR&linkClass=33&menuCode=002",
     headers: { "User-Agent": "Mozilla/5.0" },
     encoding: null
 };
+
+if(connection.db){
+    console.log("데이터베이스 연결 성공!");
+}
 
 
 
@@ -36,42 +42,37 @@ request(requestOptions, function (error, response, body) {
                 // 책 이미지
                 image: $(this).find("div.cover_wrap span img").attr('src'),
                 // 책 제목
-                title: $(this).find("div.detail div.title a strong").text().trim(),
+                title: $(this).find("div.detail div.title a strong").text(),
                 // 책 글쓴이
                 author: $(this).find("div.detail div.pub_info span.author").text(),
                 // 책 요약정보
-                info: $(this).find("div.detail div.info span").text().trim()
+                info: $(this).find("div.detail div.info span").text(),
+                // 책 링크 정보
+                link: $(this).find(".cover_wrap .cover a").attr('href')
             };
             // 책 이미지 경로
-            cr_image = $(this).find("div.cover_wrap span img").attr('src');
+            let cr_image = $(this).find("div.cover_wrap span img").attr('src');
             // 책 제목 텍스트
-            cr_title = $(this).find("div.detail div.title strong").text();
+            let cr_title = $(this).find("div.detail div.title strong").text();
             // 책 글쓴이 텍스트
-            cr_author = $(this).find("div.detail div.pub_info span.author").text();
+            let cr_author = $(this).find("div.detail div.pub_info span.author").text();
             // 책 요약 정보 텍스트
-            cr_info = $(this).find("div.detail div.info span").text();
-
-            // 비밀번호는 별도의 파일로 분리해서 버전관리에 포함시키지 않아야 합니다. 
-            var connection = mysql.createConnection({
-                host: 'localhost',
-                port: '3306',
-                user: 'psj', // DB 계정
-                password: 'permissionchmodchown', // DB 계정 비밀번호
-                database: 'bct' // 접속할 DB
-            });
-            // mysql 접속
-            connection.connect();
+            let cr_info = $(this).find("div.detail div.info span").text();
+            // 책 링크 정보
+            let cr_link = $(this).find(".cover_wrap .cover a").attr('href');
+                   
+            
+            var sql = 'INSERT INTO bct_domestic_crawl (image, title, author, info, link) VALUES(?,?,?,?,?)';
+            var params = [cr_image, cr_title, cr_author, cr_info, cr_link];
             // SQL문 실행
-            connection.query("INSERT INTO bct_domestic_crawl(image, title, author, info) VALUES('" + cr_image + "','" + cr_title + "','" + cr_author + "','" + cr_info + "')", function (error, results, fields) {
-                // 에러 발생시
-                if (error) {
-                    console.log(error);
+            connection.db.query(sql, params, function (err, rows, fields) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("SQL 실행 성공! ");
                 }
-                // 실행 성공
-                console.log(results);
             });
-            // mysql 종료
-            connection.end();
+            
         });
 
         // bodyList 에 저장된 데이터 콘솔에 출력하는 반복문
@@ -83,7 +84,8 @@ request(requestOptions, function (error, response, body) {
 
 
     }
-
+// mysql 종료
+connection.db.end();
 });
 
 
