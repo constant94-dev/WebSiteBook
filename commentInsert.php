@@ -22,6 +22,15 @@ session_start();
     echo mysqli_error($db);
     }
 
+    $sql = "UPDATE bct_board SET comment_total = comment_total + 1 WHERE id = $board_num";
+
+// 데이터베이스에 sql 명령어 보내서 나온 결과값 result 변수에 저장
+$result = $db->query($sql);
+if($result == false){
+// 데이터베이스에 날린 query가 동작하지 않는다면 보여주는 출력
+echo mysqli_error($db);
+}
+
     // 댓글이 작성되었을 때 알림
     if($result) {
 ?>

@@ -12,9 +12,20 @@ include 'dbconfig/config.php';
 
 // 삭제할 댓글 번호 변수에 저장
 $reply_id = $_POST['delete_reply_id'];
+$board_id = $_POST['delete_board_id'];
 
 // mysqli_query 파라미터가 두개이어야 하고 첫번째 파라미터는 연동된 db 두번째 파라미터는 sql 명령문이다
 $sql = mysqli_query($db, "DELETE FROM bct_board_comment WHERE comment_num=$reply_id");
+
+$sql = "UPDATE bct_board SET comment_total = comment_total - 1 WHERE id = $board_id";
+
+// 데이터베이스에 sql 명령어 보내서 나온 결과값 result 변수에 저장
+$result = $db->query($sql);
+if($result == false){
+// 데이터베이스에 날린 query가 동작하지 않는다면 보여주는 출력
+echo mysqli_error($db);
+}
+
 
 // ajax 성공했을 때 보여줄 출력문
 echo "comment delete success";

@@ -24,16 +24,14 @@ include 'dbconfig/config.php';
     //echo $string;
 
     // 데이터베이스 bct_board 테이블 전체 행 수
-	$sql = 'select count(*) as cnt from bct_board';
+	$sql = 'SELECT count(*) AS cnt FROM bct_board';
 
     // 연결된 데이터베이스에 query를 보내는 명령어
 	$result = $db->query($sql);
     // 객체 지향 스타일 결과 집합에서 가져온 행을 나타내는 문자열의 연관 배열을 반환합니다
 	$row = $result->fetch_assoc();
-
-	
-
-	$allPost = $row['cnt']; //전체 게시글의 수
+        
+    $allPost = $row['cnt']; //전체 게시글의 수    
 
 	
 
@@ -161,6 +159,9 @@ include 'dbconfig/config.php';
 	$sql = 'select * from bct_board order by id desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 5번째까지)
 
     $result = $db->query($sql);
+
+
+   
     ?>
     <!DOCTYPE html>
 
@@ -259,7 +260,7 @@ include 'dbconfig/config.php';
 							while($row = $result->fetch_assoc())
 
 							{
-
+                                
 						?>
 
 					<tr>
@@ -269,6 +270,7 @@ include 'dbconfig/config.php';
 						<td class="title">
 
 							<a id="faq-title" href="faqboard.php?board_num=<?php echo $row['id']?>"><?php echo $row['title']?></a>
+                            <a id="faq-title" href="faqboard.php?board_num=<?php echo $row['id']?>"><?php echo "[" . $row['comment_total'] . "]"?></a>
 
 						</td>
 

@@ -30,11 +30,11 @@
             <h2 id="faqwrite-title">글쓰기</h2>
             <form action="faqInsertSuccess.php" method="post">
             <div class="mb-3">
-                <label for="title">제목</label>
+                <h3><label for="title">제목</label></h3>
                 <input class="form-control" id="title" name="title" placeholder="제목을 입력해 주세요" type="text">
             </div>
             <div class="mb-3">
-                <label for="title">내용</label>
+                <h3><label for="title">내용</label></h3>
                 <textarea class="form-control" id="content" name="content" placeholder="내용을 입력해 주세요" rows="5"></textarea>
             </div>            
             <div id="faqwrite-list">

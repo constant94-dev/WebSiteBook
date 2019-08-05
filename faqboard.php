@@ -2,6 +2,8 @@
 include 'dbconfig/config.php';
 session_start();
 
+    // 로그인한 사용자 이름
+    $user = $_SESSION['user_name'];
     // 사용자가 클릭한 게시글 번호
     $faqid = $_GET['board_num'];
     // 사용자가 클릭한 게시글에 조회수, 게시글 번호 알아내기 위한 sql문
@@ -14,17 +16,12 @@ session_start();
     $id = $boardRow['id'];
     // 게시글 조회수
     $hit = $boardRow['hit'];
+    // 게시글 작성자
+    $board_name = $boardRow['user'];
 
-    // 게시글에 작성된 댓글 정보를 알아내기 위한 sql문
-    $commentSQL = "SELECT * FROM bct_board_comment WHERE board_num='$id'";
-    // 연동된 데이터베이스에 쿼리 보내기
-    $commentResult = $db->query($commentSQL);
-    // 쿼리 결과 값을 저장할 변수
-    $commentRow=mysqli_fetch_assoc($commentResult);
-    // 게시글에 작성된 댓글 작성자 이름
-    $name =$commentRow['comment_name'];
-    // 로그인한 사용자 이름
-    $user = $_SESSION['user_name'];
+    
+
+    
 
 
 
@@ -162,15 +159,20 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             <hr/>
             <form action="faqUpdate.php?title=<?php echo $boardRow['title'];?>" method="post">
             <div class="mb-3">
-                <label for="title">제목</label>
+                <h3 class="comment-title"><label for="title">제목</label></h3>
                 <div><strong><?php echo $boardRow['title'];?></strong></div>                
             </div>
             <hr/>
             <div class="mb-3">
-                <label for="title">내용</label>
+                <h3 class="comment-title"><label for="title">내용</label></h3>
                 <div><?php echo $boardRow['content'];?></div>
             </div>
-                      
+            <?php
+            if($user == $board_name){
+            ?>
+            <button type="submit" class="btn btn-warning" onclick="updateBtn()">수정</button>
+            <button type="submit" class="btn btn-danger" onclick="deleteBtn()">삭제</button>
+            <?php } ?>
             </form>
         
         
@@ -261,13 +263,22 @@ getAllList();
                     html += '<li>';
                     html += '<div>';
                     html += '<hr>';
-                    html += "<input type='hidden' value='<?php echo $id?>'>";
+                    html += "<input type='hidden' id='delete_board_num' value='<?php echo $id ?>'>";
+                    html += "<input type='hidden' id='delete_board_num' value='+ +'";
                     html += '<strong id=name'+value.comment_num+'>' + value.comment_num +' / '+ value.comment_name + '</strong>';
                     html += '&#9;&#9;<span id=date'+value.comment_num+'>' + value.comment_date + '</span>';
-                    html += '<?php if($user == $name){ ?>';
+                    html += '<?php   
+                    
+                    // 사용자가 클릭한 게시글에 조회수, 게시글 번호 알아내기 위한 sql문
+                    $commentSQL = "SELECT comment_name FROM bct_board_comment WHERE board_num= '$faqid'";
+                    // 연동된 데이터베이스에 쿼리 보내기
+                    $commentResult = $db->query($commentSQL);           
+                    //echo "<script>console.log('세션에 저장된 이름 / $user ')</script>";
+                    //echo "<script>console.log('쿼리로 불러온 이름 / $name ')</script>";                    
+                    if(mysqli_fetch_assoc($commentResult) == $user){ ?>';                    
                     html += '<a href="#" class="comment-delete" reply_id=' + value.comment_num+'>' + '&nbsp;삭제&nbsp;' + '</a>';
                     html += '<a href="#" class="comment-update" reply_id=' + value.comment_num+'>' + '&nbsp;수정&nbsp;' + '</a>';
-                    html += '<?php } ?>';
+                    html += '<?php } ?>';                   
                     html += '<p id=content'+value.comment_num+'>' + value.comment_content + '</p>';                    
                     html += '</div>';
                     html += '</li>';
@@ -363,13 +374,16 @@ getAllList();
             console.log('댓글 삭제 클릭 했어!');
             // 삭제할 댓글 번호
             var delete_reply_id = $(this).attr('reply_id');
-            console.log(delete_reply_id);
-            // 데이터베이스 댓글 수정 기능 ajax x1시작
+            var delete_board_id = $('#delete_board_num').val();
+            console.log("삭제 댓글 번호 / "+delete_reply_id);
+            console.log("삭제 게시글 번호 / "+delete_board_id);
+            // 데이터베이스 댓글 수정 기능 ajax 시작
             $.ajax({
 			            type : 'POST',
 			            url : 'commentDelete.php',
 			            data : {
-                            delete_reply_id: delete_reply_id                            
+                            delete_reply_id: delete_reply_id,
+                            delete_board_id: delete_board_id                            
                         }                
                     }) // 데이터베이스 댓글 수정 기능 ajax 끝
                         // ajax 통신 성공했을 때
@@ -385,7 +399,7 @@ getAllList();
         }); // ajax 사용하여 댓글 삭제하기 기능 끝
 
 
-        // 삭제 버튼 클릭 함수
+        // 게시글 삭제 버튼 클릭 함수
         function deleteBtn(){
             location.href="faqDelete.php?id=<?php echo $id;?>";
         }
