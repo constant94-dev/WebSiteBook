@@ -168,7 +168,7 @@ if(!isset($_COOKIE[$user.$id])) { // 해당 쿠키가 존재하지 않을 때
             if($user == $board_name){
             ?>
             <button type="submit" class="btn btn-warning" onclick="updateBtn()">수정</button>
-            <button type="submit" class="btn btn-danger" onclick="deleteBtn()">삭제</button>
+            <button type="button" class="btn btn-danger" onclick="deleteBtn()">삭제</button>
             <?php } ?>
             </form>
         
@@ -325,7 +325,7 @@ getAllList();
                         }                
                     }) // 데이터베이스 댓글 수정 기능 ajax 끝
                         // ajax 통신 성공했을 때
-                        .done(function (data) {
+                            .done(function (data) {
                             console.log(data);
                             getAllList();
                         })
@@ -368,23 +368,28 @@ getAllList();
             
         }; // ajax 사용하여 댓글 삭제하기 기능 끝
         
+        //
         function button_event(){
 
-if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+            if (confirm("정말 삭제하시겠습니까??") == true){    //확인
 
-    commentDelete();
+                commentDelete();
 
-}else{   //취소
-
-    return;
-
-}
-
-}
+            } else {   //취소
+                return;
+            }
+        }
 
         // 게시글 삭제 버튼 클릭 함수
         function deleteBtn(){
-            location.href="faqDelete.php?id=<?php echo $id;?>";
+            if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+
+                location.href="faqDelete.php?id=<?php echo $id;?>";
+
+            } else {   //취소
+                return;
+            }
+            
         }
        
         
