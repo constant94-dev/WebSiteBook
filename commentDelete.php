@@ -14,6 +14,7 @@ include 'dbconfig/config.php';
 $reply_id = $_POST['delete_reply_id'];
 $board_id = $_POST['delete_board_id'];
 
+
 // mysqli_query 파라미터가 두개이어야 하고 첫번째 파라미터는 연동된 db 두번째 파라미터는 sql 명령문이다
 $sql = mysqli_query($db, "DELETE FROM bct_board_comment WHERE comment_num=$reply_id");
 
