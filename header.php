@@ -66,8 +66,8 @@ session_start();
             <input type="button" class="btn btn-light" id="logoutBtn" onclick="logout()" value="로그아웃" />
             <?php } ?>
         
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+        <form class="form-inline my-2 my-lg-0" action="searchResult.php" method="get">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     <!-- 상단 메뉴 전체 틀 끝 -->

@@ -1,6 +1,12 @@
 <?php
 include 'dbconfig/config.php';
 $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
+// 데이터베이스에 저장된 전체 행 수
+$totalRecord = mysqli_num_rows($sql);
+// 데이터베이스에서 5개 행 가져오기
+$query = mysqli_query($db, "SELECT * FROM bct_domestic_crawl LIMIT 0,5");
+// 가져온 행 수 저장
+$rowCount = mysqli_num_rows($query);
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,17 +57,19 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
         <div class="domestic-category">
             <h2>국내도서 컴퓨터/IT</h2>
         </div>
-
+        <!-- new div -->
+        <div class="please">
         <?php
+            if($rowCount > 0){ 
             // 교보문고 국내도서 페이지 크롤링한 데이터
             // 데이터 저장된 데이터베이스 값 출력하기위한 반복문
-			while($row = $sql->fetch_assoc()){
+			while($row = mysqli_fetch_assoc($query)){
                 $link = $row['link'];
                 
 		?>
         <!-- best-list 시작 -->
         <div class="best-list">
-            <ul>
+            <ul class="ul-list-group">
                 <li>
                     <div>
                         <!-- 리스트 아이템 한줄 시작 -->
@@ -95,9 +103,16 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
             </ul>
         <!-- best-list 끝 -->
         </div>
+        
         <?php
-			}
+            }
+        }
 		?>
+    <!-- new div -->
+    </div>
+<div class="show-more load-post" title="More posts">
+    <i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Loading...
+</div>
     <!-- 국내도서 전체 틀 끝 -->
     </div>
         
@@ -125,7 +140,38 @@ $sql = mysqli_query($db, "SELECT * FROM bct_domestic_crawl");
             $("#headers").load("header.php");  // 원하는 파일 경로를 삽입하면 된다
             $("#footers").load("footer.php");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
 
+            $showPostFrom = 0;
+	        $showPostCount = 5;
+	        $totalRecord = <?php print_r($totalRecord); ?>;
+
+            $(window).scroll(function(){
+
+                if (($(window).scrollTop() == $(document).height() - $(window).height())){
+                    $showPostFrom += $showPostCount;
+                    $('.load-post').show();
+                    $.ajax({
+                        type:'POST',
+                        url:'domestic_more.php',
+                        data:{ 'action':'showPost',
+                               'showPostFrom':$showPostFrom,
+                               'showPostCount':$showPostCount },
+                        success:function(data){
+                            if(data != ''){
+                                console.log(data);
+                                $('.load-post').hide();
+                                $('.please').append(data).show('slow');
+                            }else{
+                                $('.show-more').hide();
+                            }
+                        }
+                    });
+                    
+                }
+            });
         });
+
+
+
     </script>
 </body>
 
