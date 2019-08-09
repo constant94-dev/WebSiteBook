@@ -55,18 +55,21 @@ include 'dbconfig/config.php';
             <h2>국내도서 컴퓨터/IT</h2>
         </div>
         
+        <!-- row 시작 -->
         <div class="row">
         <!-- best-list 시작 -->
         <div class="best-list">
              
         <!-- best-list 끝 -->
         </div>
+        <!-- row 끝 -->
         </div>
         
-    
-<div class="show-more load-post" title="More posts">
-    <img src="image/loading.gif">
-</div>
+    <!-- 로딩 이미지 시작 -->
+    <div class="show-more load-post" title="More posts">
+        <img src="image/loading.gif">
+    <!-- 로딩 이미지 끝 -->
+    </div>
     <!-- 국내도서 전체 틀 끝 -->
     </div>
         

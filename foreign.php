@@ -37,6 +37,10 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
             margin-top: 100px;
             margin-bottom: 100px;
         }
+        /* 인피니티 스크롤 로딩 이미지 css */
+        .load-post {
+            text-align: center;
+        }
        
 
     </style>
@@ -53,60 +57,17 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
             <h2>외국도서 경제/경영</h2>
         </div>
 
-        <?php
-			while($row = $sql->fetch_assoc()){
-                // 크롤링한 데이터 링크걸기 위한 변수
-                $link = $row['link'];
-                // 문자열 값 ',' 기준으로 나눈다
-                $pattern = "',";
-                // 내가 정한 기준으로 나눈 문자열 값
-                $jbexplode = explode($pattern,$link);
-                // 문자열 값 ' 기준으로 나눈다
-                $pattern2 = "'";
-                // 내가 정한 기준으로 나눈 문자열 값
-                $linkClass = explode($pattern2,$jbexplode[1]);
-                $barcode = explode($pattern2,$jbexplode[2]);
-		?>
         <!-- best-list 시작 -->
-        <div class="best-list">
+        <div class="best-list">            
             
-            <ul>
-                <li>
-                    <div>
-                        <!-- 리스트 아이템 한줄 시작 -->
-                        <div class="info_area">
-                            <!-- 책 이미지 틀 시작 -->
-                            <div class="cover_wrap" style="float:left;">
-                                <div class="cover">
-                                    <img src="<?php echo $row['image'] ?>" class="book_image">
-                                </div>
-                            <!-- 책 이미지 틀 끝 -->
-                            </div>
-                            <!-- 책 상세 정보 시작 -->
-                            <div class="detail" style="margin-left: 220px; margin-top: 10px;">
-                                <div class="book_title">
-                                    <a href="<?php echo 'http://www.kyobobook.co.kr/product/detailViewEng.laf?mallGb=ENG&ejkGb=ENG&linkClass=' . $linkClass[1] . '&barcode=' . $barcode[1] ?>">
-                                        <strong><?php echo $row['title'] ?></strong>
-                                    </a>
-                                </div>
-                                <div class="book_info">
-                                    <span class="author"><?php echo $row['author'] ?></span>
-                                </div>
-                                <div class="summary_info">
-                                    <span><?php echo $row['info'] ?></span>
-                                </div>
-                            <!-- 책 상세 정보 끝 -->
-                            </div>
-                        <!-- 리스트 아이템 한줄 끝 -->
-                        </div>                        
-                    </div>
-                </li>                
-            </ul>
         <!-- best-list 끝 -->
         </div>
-        <?php
-			}
-		?>
+        
+    <!-- 로딩 이미지 시작 -->
+    <div class="show-more load-post" title="More posts">
+        <img src="image/loading.gif">
+    <!-- 로딩 이미지 끝 -->
+    </div>
     <!-- 국내도서 전체 틀 끝 -->
     </div>
         
@@ -128,13 +89,54 @@ $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");
     <script src="js/bootstrap.min.js"></script>    
     <script type="text/javascript">
 
+var start = 0;
+        var limit = 5;
+        var reachedMax = false;
+
+        $(window).scroll(function (){
+            if($(window).scrollTop() == $(document).height() - $(window).height())
+            getData();
+        });
+	        
+
         // html 구조 다 불러오고 실행하는 함수
         $(document).ready(function () {
 
             $("#headers").load("header.php");  // 원하는 파일 경로를 삽입하면 된다
-            $("#footers").load("footer.php");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다
+            $("#footers").load("footer.php");  // 추가 인클루드를 원할 경우 이런식으로 추가하면 된다            
+            
+            getData();
+        }); // document.ready 끝
 
-        });
+        // 최하단 스크롤 데이터 가져오기
+        function getData(){
+            if(reachedMax)
+                return;
+
+            $.ajax({
+                url: 'foreign_more.php',
+                method: 'POST',
+                dataType: 'text',
+                data: {
+                    getData: 1,
+                    start: start,
+                    limit: limit
+                },
+                success: function(response){                    
+                    if(response == "reachedMax"){
+                        reachedMax = true;
+                        $('.show-more').hide();
+                   }               
+                        
+                    else {
+                        $('.show-more').show();
+                        start += limit;
+                        $(".best-list").append(response);
+                    }
+                }
+            });
+        } // getData() 끝
+
     </script>
 </body>
 
