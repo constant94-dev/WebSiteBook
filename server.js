@@ -6,7 +6,9 @@
 // 식별자(identifier) -> 변수의 이름, 상수의 이름, 함수의 이름 등 '이름'을 일반화 해서 지칭하는 용어
 // 리터럴(liternal) -> '값' 그 자체, 고정된 값을 의미
 // 'a = 7' -> a는 식별자 7은 리터럴
+const express = require('express');
 const app = require('express')();
+//var fs = require('fs');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
@@ -17,19 +19,29 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 
-let room = ['room1', 'room2'];
+let room = ['국내도서', '외국도서', '웹툰'];
 let a = 0;
+
+
 
 // view 파일의 확장자가 지정이 되어있다면 확장자를 생략할 수 있다
 // 홈 페이지에 대한 요청을 실행할 때, chat.ejs 파일은 HTML 형식으로 렌더링 된다
-app.get('/', (req, res) => {
-  res.render('chat');
+app.get('/', function (req, res) {   
+    // fs.readFile('index.html',function(error, data){
+    //     res.writeHead(200,{'Content-Type':'text/html'});
+    //     res.end(data);
+    // });
+    res.render('chat');
+    
+  
 });
 
-
+// on()은 소켓에서 해당 이벤트를 받으면 콜백함수가 실행된다
+// on은 수신, emit은 전송이라고 생각하면 된다
 io.on('connection', (socket) => {
+    console.log('유저 접속 됨');
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log('유저 접속 종료');
   });
 
 
@@ -59,5 +71,5 @@ io.on('connection', (socket) => {
 
 
 http.listen(8888, () => {
-  console.log('Connect at 8888');
+  console.log('서버 실행 중..');
 });
