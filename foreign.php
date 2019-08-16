@@ -1,4 +1,12 @@
 <?php
+session_start();
+if(!isset($_SESSION['user_email']) || !isset($_SESSION['user_name'])){
+    echo "<script>
+    alert('잘못된 접근입니다');
+    location.replace('index.html');
+    </script>";
+}
+
 include 'dbconfig/config.php';
 // 교보문고 외국도서 크롤링한 정보 가져오는 sql문
 $sql = mysqli_query($db, "SELECT * FROM bct_foreign_crawl");

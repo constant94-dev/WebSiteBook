@@ -1,4 +1,12 @@
 <?php
+session_start();
+if(!isset($_SESSION['user_email']) || !isset($_SESSION['user_name'])){
+    echo "<script>
+    alert('잘못된 접근입니다');
+    location.replace('index.html');
+    </script>";
+}
+
 include 'dbconfig/config.php';
 
 // 검색어 변수 값 확인
